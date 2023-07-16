@@ -9,7 +9,7 @@
         >
             <div :class="route.fullPath === '/' ? 'w-[80%]' : 'lg:w-[20%] w-[70%]'">
                 <NuxtLink to="/">
-                    <img width="115" src="~C:\Users\Jaishish\undumbweb\360_F_129260242_r58rybpDB4GimZkExJIJKfLEUR0q3oIl.jpg">
+                    <!-- <img width="115" src="~C:\Users\Jaishish\undumbweb\360_F_129260242_r58rybpDB4GimZkExJIJKfLEUR0q3oIl.jpg"> -->
 
                 </NuxtLink>
 
@@ -33,8 +33,10 @@
                     <Icon name="material-symbols:add" color="#000000" size="22"/>
                     <span class="px-2 font-medium text-[15px]">Upload</span>
                 </button>
-                <div v-if="false" class="flex items-center">
-                    <button class="flex-items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]">
+                <div v-if="!$userStore.id" class="flex items-center">
+                    <button 
+                    @click="$generalStore.isLoginOpen = true" 
+                    class="flex-items-center bg-[#f0cc2c] text-white border rounded-md px-3 py-[6px]">
                         <span class="mx-4 font-medium text-[15px]">Log In</span>
 
                     </button>
@@ -42,7 +44,7 @@
 
 
                 </div>
-                <div class="flex items-center">
+                <div v-else class="flex items-center">
                     <Icon class="ml-1 mr-4" name="ri:send-plane-fill" color="#161724" size="27"/>
                     <Icon class="mr-5" name="material-symbols:chat-rounded" color="161724" size="27"/>
                     <div class="relative">
@@ -94,6 +96,8 @@
 </template>
 
 <script setup>
+const { $userStore, $generalStore } = useNuxtApp()
+
     const route = useRoute()
     let showMenu = ref(false)
 </script>
