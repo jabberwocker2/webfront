@@ -1,10 +1,10 @@
 
 <template>
     <TopNav/>
-    
+    <AddScrollable/>
     <div
-        :class="route.fullPath === '/' ? 'max-w-[1140px]' : ''"
-        class="flex justify-between mx-auto  lg:px-2.5 px-0"
+        :class="route.fullPath === '/' ? 'max-w-[1920px]' : ''"
+        class=" grid  mx-auto  lg:px-2.5 px-0"
     >
         <div>
             <SideNavMain />

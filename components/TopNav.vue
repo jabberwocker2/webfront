@@ -1,7 +1,7 @@
 <template>
     <div 
         id="TopNav" 
-        class="fixed bg-white z-30 flex items-center w-full border-b h-[61px]"
+        class="relative bg-white z-30 flex items-center w-full border-b h-[61px]"
     >
         <div 
             :class="route.fullPath === '/' ? 'max-w-[1150px]' : ''" 
