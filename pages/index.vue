@@ -1,7 +1,7 @@
 
 <template>
     <MainLayout>
-        <vue-scroll-snap>
+        <vue-scroll-snap class="justify-self-center">
 
             <div class="pt-[90px] w-{calc(100px-90px)} max-w-[690px]">
             <div class="item">
@@ -30,7 +30,6 @@
 import MainLayout from '~/layouts/MainLayout.vue';
 import VueScrollSnap from "vue-scroll-snap";
 
-
 </script>
 
 <style>
@@ -40,7 +39,6 @@ import VueScrollSnap from "vue-scroll-snap";
 }
 
 .scroll-snap-container {
-    margin-top: 50px;
     height: 700px;
     width: 500px;
     -ms-overflow-style: none;  /* IE and Edge */
