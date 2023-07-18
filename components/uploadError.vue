@@ -1,6 +1,7 @@
 <template>
     <div class="w-[100%] relative flex justify-center">
-        <div class="
+        <div 
+            class="
                 absolute 
                 top-6 
                 z-50 
@@ -11,13 +12,15 @@
                 px-14 
                 py-3 
                 rounded-sm 
-            " :class="errorType ? 'visible' : 'invisible'">
+            "
+            :class="errorType ? 'visible' : 'invisible'"
+        >
             {{ error }}
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 const props = defineProps(['errorType'])
 const { errorType } = toRefs(props)
 
@@ -35,4 +38,3 @@ watch(() => errorType.value, () => {
     }
 })
 </script>
-

@@ -41,6 +41,7 @@
 
     <div class="px-6 pb-2 mt-6">
         <button 
+            @click="register()"
             :disabled="(!name || !email || !password || !confirmPassword)"
             :class="(!name || !email || !password || !confirmPassword) ? 'bg-gray-200' : 'bg-[#f0e02c]'"
             class="w-full text-[17px] font-semibold text-white bg-[#f0e02c] py-3 rounded-sm"
