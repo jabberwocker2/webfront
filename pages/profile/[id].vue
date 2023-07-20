@@ -55,7 +55,7 @@
             <div class="w-full flex items-center pt-4 border-b">
                 <div class="w-60 text-center py-2 text-[17px] font-semibold border-b-2 border-b-black">Videos</div>
                 <div class="w-60 text-gray-500 text-center py-2 text-[17px] font-semibold">
-                    <Icon name="material-symbols:lock-open" class="mb-0.5"/> Liked
+                    <Icon name="material-symbols:lock-open" class="mb-0.5"/> Thoughts
                 </div>
             </div>
 

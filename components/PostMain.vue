@@ -14,61 +14,73 @@
                     </span>
                 </button>
 
-                <button 
-                @click="follow(user)"
-                class="border text-[15px] px-[21px] py-0.5 hover:bg-[#ffeef2] font-semibold rounded-md">
+                <button @click="follow(user)"
+                    class="border text-[15px] px-[21px] py-0.5 hover:bg-[#ffeef2] font-semibold rounded-md">
                     Follow
                 </button>
             </div>
-            <div class="text-[15px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
-            <div class="text-[14px] text-gray-500 pb-0.5">#fun #cool #SuperAwesome</div>
-            <div class="text-[14px] pb-0.5 flex items-center font-semibold">
-                <Icon name="mdi:music" size="17"/>
+
+            <div v-if="post.video == 'http://localhost:8000'"
+                class="text-[30px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
+            <div v-else class="text-[15px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
+            <div class="text-[14px] text-gray-500 pb-0.5">{{ post.tags }}</div>
+            <div v-if="post.video != 'http://localhost:8000'" class="text-[14px] pb-0.5 flex items-center font-semibold">
+                <Icon name="mdi:music" size="17" />
                 <div class="px-1">original sound - AWESOME</div>
-                <Icon name="mdi:lightbulb" size="20"/>
+                <Icon name="mdi:lightbulb" size="20" />
             </div>
 
             <div class="mt-2.5 flex">
-                <div
-                    @click="displayPost(post)"
-                    class="relative min-h-[480px] max-h-[580px] max-w-[260px] flex items-center bg-black rounded-xl cursor-pointer"
-                >
-                    <video 
-                        v-if="post.video"
-                        ref="video"
-                        loop
-                        muted
-                        class="rounded-xl object-cover mx-auto h-full" 
-                        :src="post.video" 
-                    />
-                  
+                <div v-if="post.video == 'http://localhost:8000'"
+                    class="debate relative min-h-[480px] max-h-[580px] min-w-[265px]  items-center bg-white-200 rounded-xl cursor-pointer">
+                    <div v-for="comment in post.comments" :key="comment"
+                        class="unset">
+                        <div class="  w-full">
+                            <NuxtLink :to="`/profile/${comment.user.id}`">
+                                <img class="absolute top-0 rounded-full lg:mx-0 mx-auto" width="40"
+                                    :src="comment.user.image">
+                            </NuxtLink>
+                            <div class="ml-14 pt-0.5 w-full">
+                                <div class="text-[18px] font-semibold flex justify-between">
+                                    {{ comment.user.name }}
+                                    <Icon v-if="$userStore.id === comment.user.id"
+                                        @click="deleteComment($generalStore.selectedPost, comment.id)"
+                                        class="cursor-pointer" name="material-symbols:delete-outline-sharp" size="25" />
+                                </div>
+                                <div class="text-[15px] font-light">
+                                    {{ comment.text }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div v-else @click="displayPost(post)"
+                    class="relative min-h-[480px] max-h-[580px] max-w-[260px] flex items-center bg-black rounded-xl cursor-pointer">
+                    <video ref="video" loop muted class="rounded-xl object-cover mx-auto h-full" :src="post.video" />
+
+
+                </div>
+
                 <div class="relative mr-[75px]">
                     <div class="absolute bottom-0 pl-2">
                         <div class="pb-4 text-center">
-                            <button
-                                @click="isLiked ? unlikePost(post) : likePost(post)"
-                                class="rounded-full bg-gray-200 p-2 cursor-pointer"
-                            >
-                                <Icon 
-                                    name="mdi:lightbulb" 
-                                    size="25" 
-                                    :color="isLiked ? '#f0cc2c' : ''"
-                                />
+                            <button @click="isLiked ? unlikePost(post) : likePost(post)"
+                                class="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                <Icon name="mdi:lightbulb" size="25" :color="isLiked ? '#f0cc2c' : ''" />
                             </button>
                             <span class="text-xs text-gray-800 font-semibold">{{ post.likes.length }}</span>
                         </div>
 
                         <div class="pb-4 text-center">
                             <div class="rounded-full bg-gray-200 p-2 cursor-pointer">
-                                <Icon name="bx:bxs-message-rounded-dots" size="25"/>
+                                <Icon name="bx:bxs-message-rounded-dots" size="25" />
                             </div>
                             <span class="text-xs text-gray-800 font-semibold">43</span>
                         </div>
 
                         <div class="text-center">
                             <div class="rounded-full bg-gray-200 p-2 cursor-pointer">
-                                <Icon name="ri:share-forward-fill" size="25"/>
+                                <Icon name="ri:share-forward-fill" size="25" />
                             </div>
                             <span class="text-xs text-gray-800 font-semibold">55</span>
                         </div>
@@ -80,35 +92,59 @@
 </template>
 
 <script setup>
-const { $generalStore, $userStore } = useNuxtApp()
-const props = defineProps(['post','user'])
+const { $generalStore, $userStore, $profileStore } = useNuxtApp()
+const props = defineProps(['post', 'user'])
 
-const { post,user } = toRefs(props)
-console.log(post);
+const { post, user } = toRefs(props)
 const router = useRouter()
+let comment = ref(null)
 
 let video = ref(null)
+console.log(post);
+if (post.video == 'http://localhost:8000') {
+    onMounted(() => {
+        $generalStore.selectedPost = post.value;
+        let observer = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) {
+                console.log('Element is playing' + post.value.id);
+                video.value.play()
+            } else {
+                console.log('Element is paused' + post.value.id);
+                video.value.pause()
+            }
 
-onMounted(() => {
-    let observer = new IntersectionObserver(function(entries) {
-        if (entries[0].isIntersecting) {
-            console.log('Element is playing' + post.value.id);
-            video.value.play()
-        } else {
-            console.log('Element is paused' + post.value.id);
-            video.value.pause()
+        }, { threshold: [0.6] });
+        observer.observe(document.getElementById(`PostMain-${post.value.id}`));
+    })
+
+
+
+    onBeforeUnmount(() => {
+        video.value.pause()
+        video.value.currentTime = 0
+        video.value.src = ''
+    })
+}
+const addComment = async () => {
+    try {
+        await $userStore.addComment($generalStore.selectedPost, comment.value)
+        comment.value = null
+        document.getElementById('Comments').scroll({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const deleteComment = async (post, commentId) => {
+    let res = confirm('Are you sure you want to delete this comment?')
+    try {
+        if (res) {
+            await $userStore.deleteComment(post, commentId)
         }
-
-    }, { threshold: [0.6] });
-
-    observer.observe(document.getElementById(`PostMain-${post.value.id}`));
-})
-
-onBeforeUnmount(() => {
-    video.value.pause()
-    video.value.currentTime = 0
-    video.value.src = ''
-})
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 const isLiked = computed(() => {
     let res = post.value.likes.find(like => like.user_id === $userStore.id)
@@ -185,11 +221,14 @@ const isLoggedIn = (user) => {
 const displayPost = (post) => {
     if (!$userStore.id) {
         $generalStore.isLoginOpen = true
+        console.log($generalStore.selectedPost);
         return
     }
 
     $generalStore.setBackUrl('/')
     $generalStore.selectedPost = null
     setTimeout(() => router.push(`/post/${post.id}`), 200)
+
 }
+
 </script>
