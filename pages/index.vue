@@ -22,7 +22,7 @@ const { $generalStore } = useNuxtApp()
 
 onMounted(async () => {
     try {
-        $generalStore.getAllUsersAndPosts()
+        $generalStore.getAllUsersAndPosts('')
     } catch (error) {
         console.log(error)
     }
@@ -32,12 +32,13 @@ onMounted(async () => {
 <style>
 .item {
     /* Set the minimum height of the items to be the same as the height of the scroll-snap-container.*/
-    min-height: 700px;
+    min-height: 800px;
 }
 
 .scroll-snap-container {
-    height: 700px;
-    width: 500px;
+    margin-top: 2rem;
+    height: 800px;
+    width: 450px;
     -ms-overflow-style: none;
     /* IE and Edge */
     scrollbar-width: none;
