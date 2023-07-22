@@ -1,7 +1,7 @@
 <template>
     <div 
         id="TopNav" 
-        class="relative bg-white z-30 flex items-center w-full border-b h-[61px]"
+        class="relative bg-white dark:bg-black z-30 flex items-center w-full border-b h-[61px]"
     >
         <div 
             :class="route.fullPath === '/' ? 'max-w-[1150px]' : ''" 
@@ -36,7 +36,7 @@
                 <div v-if="!$userStore.id" class="flex items-center">
                     <button 
                         @click="$generalStore.isLoginOpen = true" 
-                        class="flex items-center bg-[#F02C56] text-white border rounded-md px-3 py-[6px]"
+                        class="flex items-center bg-[#f0cc2c] text-white border rounded-md px-3 py-[6px]"
                     >
                         <span class="mx-4 font-medium text-[15px]">Log in</span>
                     </button>
@@ -60,7 +60,7 @@
                         <div 
                             v-if="showMenu" 
                             id="PopupMenu"
-                            class="absolute bg-white rounded-lg py-1.5 w-[200px] shadow-xl border top-[43px] -right-2"
+                            class="absolute bg-white dark:bg-black rounded-lg py-1.5 w-[200px] shadow-xl border top-[43px] -right-2"
                         >
                             <NuxtLink 
                                 :to="`/profile/${$userStore.id}`" 

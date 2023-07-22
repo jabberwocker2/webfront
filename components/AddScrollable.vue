@@ -1,5 +1,5 @@
 <template>
-    <div class="scrolltags flex overflow-scroll m-4 ml-[20%] mr-[20%]">
+    <div class="scrolltags flex overflow-scroll m-4 ml-[15%] mr-[20%]">
         <button :class="`${tags.label}`" :id="`${tags.label}`" v-for="tags in $allTagsGeneral" :key="tags"
             @click="searchWithTags(tags, $event)"
             class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">

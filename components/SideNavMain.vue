@@ -1,8 +1,8 @@
 +<template>
     <div 
         id="SideNavMain" 
-        :class="route.fullPath === '/' ? 'lg:w-[310px]' : 'lg:w-[220px]'" 
-        class="fixed z-20 bg-white h-full lg:border-r-0 border-r w-[75px] overflow-auto"
+        :class="route.fullPath === '/' ? 'lg:w-[250px]' : 'lg:w-[220px]'" 
+        class="fixed z-20 bg-white dark:bg-black h-full lg:border-r-0 border-r w-[75px] overflow-auto"
     >
         
         <div class="lg:w-full w-[55px] mx-auto">

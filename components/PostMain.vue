@@ -1,9 +1,12 @@
 <template>
-    <div :id="`PostMain-${post.id}`" class="flex border-b ">
+    <div :id="`PostMain-${post.id}`" class="flex  ">
+        
         <div v-if="post.video == 'http://localhost:8000'" @click="isLoggedIn(post.user)" class="cursor-pointer">
             <img class="rounded-full max-h-[60px]" width="60" :src="post.user.image">
         </div>
+
         <div class="pl-3 w-full px-4">
+            
             <div v-if="post.video == 'http://localhost:8000'" class="flex items-center justify-between pb-0.5">
                 <button @click="isLoggedIn(post.user)">
                     <span class="font-bold hover:underline cursor-pointer">
@@ -21,7 +24,7 @@
             </div>
 
             <div v-if="post.video == 'http://localhost:8000'"
-                class="text-[30px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
+                class="commentText text-[30px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
 
             <div v-if="post.video == 'http://localhost:8000'" class="flex items-center pb-0.5">
 
@@ -31,35 +34,41 @@
 
 
 
-            <div >
+            <div>
+
                 <div v-if="post.video == 'http://localhost:8000'"
-                    class="debate relative min-h-[480px] max-h-[580px] min-w-[265px]  items-center bg-white-200 rounded-xl cursor-pointer">
-                    <div v-for="comment in post.comments" :key="comment" class="unset">
-                        <div class="  w-full">
+                
+                    class="debate relative min-h-[480px] max-h-[580px] min-w-[265px]  items-center bg-white dark:bg-black-200 rounded-xl cursor-pointer">
+
+                    <div v-for="comment in post.comments" :key="comment" class="commentSection unset">
+                        <div class="commentArea w-full">
+
                             <NuxtLink :to="`/profile/${comment.user.id}`">
-                                <img class="absolute top-0 rounded-full lg:mx-0 mx-auto" width="40"
-                                    :src="comment.user.image">
+                                <img class="rounded-full lg:mx-0 mx-auto" width="40" :src="comment.user.image">
                             </NuxtLink>
-                            <div class="ml-14 pt-0.5 w-full">
+                            <div class="ml-1 pt-0.5 w-full">
                                 <div class="text-[18px] font-semibold flex justify-between">
                                     {{ comment.user.name }}
                                     <Icon v-if="$userStore.id === comment.user.id"
                                         @click="deleteComment($generalStore.selectedPost, comment.id)"
                                         class="cursor-pointer" name="material-symbols:delete-outline-sharp" size="25" />
                                 </div>
-                                <div class="text-[15px] font-light">
+                                <div class="text-[15px] font-light break-words max-w-[70%]">
                                     {{ comment.text }}
                                 </div>
                             </div>
                         </div>
+
                     </div>
+
                 </div>
-                <div v-else class="relative min-h-[480px] max-h-[750px] max-w-[420px]  flex items-center bg-black rounded-xl ">
+
+                <div v-else
+                    class="relative min-h-[480px] max-h-[750px] max-w-[420px]  flex items-center bg-black rounded-xl ">
 
                     <div class="absolute bottom-2 left-3 text-white mb-2 ml-2 z-2">
                         <div class="flex items-center  pb-0.5">
-                            <div  @click="isLoggedIn(post.user)"
-                                class="cursor-pointer">
+                            <div @click="isLoggedIn(post.user)" class="cursor-pointer">
                                 <img class="rounded-full max-h-[60px] mr-2" width="30" :src="post.user.image">
                             </div>
                             <button @click="isLoggedIn(post.user)">
@@ -305,3 +314,36 @@ const displayPost = (post) => {
 }
 
 </script>
+
+<style>
+.debate {
+    max-height: 500px;
+    overflow: scroll;
+}
+
+.debate::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.commentSection {
+
+    max-height: 500px;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+
+}
+
+.commentSection::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.commentArea {
+    max-width: 350px;
+    display: -webkit-box;
+}
+</style>

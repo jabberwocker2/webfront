@@ -10,7 +10,7 @@
     </div>
 
     <UploadLayout>
-        <div class="w-full mt-[80px] mb-[40px] bg-white shadow-lg rounded-md py-6 md:px-10 px-4">
+        <div class="w-full mt-[80px] mb-[40px] bg-white dark:bg-black shadow-lg rounded-md py-6 md:px-10 px-4">
             <div>
                 <div class="text-[23px] font-semibold">Upload video or a thought</div>
                 <div class="text-gray-400 mt-1">Post a video or a thought to your account</div>
