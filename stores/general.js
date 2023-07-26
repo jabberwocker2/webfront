@@ -26,6 +26,7 @@ export const useGeneralStore = defineStore('general', {
     musicTag:false,
     newsTag:false,
     selectedTags:null,
+    replyActive:false
   }),
   actions: {
     bodySwitch(val) {

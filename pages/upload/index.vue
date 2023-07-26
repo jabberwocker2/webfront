@@ -1,12 +1,9 @@
-<template>    
+<template>
+    <UploadError :errorType="errorType" />
 
-    <UploadError :errorType="errorType"/>
-
-    <div 
-        v-if="isUploading"
-        class="fixed flex items-center justify-center top-0 left-0 w-full h-screen bg-black z-50 bg-opacity-50"
-    >
-        <Icon class="animate-spin ml-1" name="mingcute:loading-line" size="100" color="#FFFFFF"/>
+    <div v-if="isUploading"
+        class="fixed flex items-center justify-center top-0 left-0 w-full h-screen bg-black z-50 bg-opacity-50">
+        <Icon class="animate-spin ml-1" name="mingcute:loading-line" size="100" color="#FFFFFF" />
     </div>
 
     <UploadLayout>
@@ -18,12 +15,7 @@
 
             <div class="mt-8 md:flex gap-6">
 
-                <label 
-                    v-if="!fileDisplay"
-                    for="fileInput"
-                    @drop.prevent="onDrop" 
-                    @dragover.prevent=""
-                    class="
+                <label v-if="!fileDisplay" for="fileInput" @drop.prevent="onDrop" @dragover.prevent="" class="
                         md:mx-0
                         mx-auto
                         mt-4
@@ -43,9 +35,8 @@
                         rounded-lg 
                         hover:bg-gray-100 
                         cursor-pointer
-                    "
-                >
-                    <Icon name="majesticons:cloud-upload" size="40" color="#b3b3b1"/>
+                    ">
+                    <Icon name="majesticons:cloud-upload" size="40" color="#b3b3b1" />
                     <div class="mt-4 text-[17px]">Select video to upload</div>
                     <div class="mt-1.5 text-gray-500 text-[13px]">Or drag and drop a file</div>
                     <div class="mt-12 text-gray-400 text-sm">MP4</div>
@@ -54,19 +45,10 @@
                     <div class="px-2 py-1.5 mt-8 text-white text-[15px] w-[80%] bg-[#f0cc2c] rounded-sm">
                         Select file
                     </div>
-                    <input 
-                        ref="file" 
-                        type="file" 
-                        id="fileInput"
-                        @input="onChange" 
-                        hidden 
-                        accept=".mp4" 
-                    />
+                    <input ref="file" type="file" id="fileInput" @input="onChange" hidden  />
                 </label>
 
-                <div
-                    v-else
-                    class="
+                <div v-else class="
                         md:mx-0
                         mx-auto
                         mt-4
@@ -82,25 +64,17 @@
                         rounded-2xl
                         cursor-pointer
                         relative
-                    "
-                >
+                    ">
                     <div class="bg-black h-full w-full" />
-                    <img 
-                        class="absolute z-20 pointer-events-none" 
-                        src="~/assets/images/mobile-case.png"
-                    >
-                  
-                    <video 
-                        autoplay
-                        loop
-                        muted
-                        class="absolute rounded-xl object-cover z-10 p-[13px] w-full h-full" 
-                        :src="fileDisplay" 
-                    />
+                    <img class="absolute z-20 pointer-events-none" src="~/assets/images/mobile-case.png">
 
-                    <div class="absolute -bottom-12 flex items-center justify-between z-50 rounded-xl border w-full p-2 border-gray-300">
+                    <video autoplay loop muted class="absolute rounded-xl object-cover z-10 p-[13px] w-full h-full"
+                        :src="fileDisplay" />
+
+                    <div
+                        class="absolute -bottom-12 flex items-center justify-between z-50 rounded-xl border w-full p-2 border-gray-300">
                         <div class="flex items-center truncate">
-                            <Icon name="clarity:success-standard-line" size="16" class="min-w-[16px]"/>
+                            <Icon name="clarity:success-standard-line" size="16" class="min-w-[16px]" />
                             <div class="text-[11px] pl-1 truncate text-ellipsis">{{ fileData.name }}</div>
                         </div>
                         <button @click="clearVideo" class="text-[11px] ml-2 font-semibold">
@@ -110,25 +84,20 @@
                 </div>
 
                 <div class="mt-4 mb-6">
-                   
+
 
                     <div class="mt-5">
                         <div class="flex items-center justify-between">
                             <div class="mb-1 text-[15px]">Thought</div>
                             <div class="text-gray-400 text-[12px]">{{ caption.length }}/150</div>
                         </div>
-                        <input 
-                            v-model="caption"
-                            maxlength="150"
-                            type="text"
-                            class="
+                        <input v-model="caption" maxlength="150" type="text" class="
                                 w-full
                                 border
                                 p-2.5
                                 rounded-md
                                 focus:outline-none
-                            "
-                        >
+                            ">
                     </div>
                     <div class="mt-5">
                         <div class="flex items-center justify-between">
@@ -136,176 +105,185 @@
                             <div class="text-gray-400 text-[12px]">{{ caption.length }}/150</div>
                         </div>
                         <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Sports
-        </div>
-        <div @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer" value="history">
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
 
-            History
-        </div>
-        <div @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            News
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Cooking
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            National
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            DIY
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Kids
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Music
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Craft
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Science
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Cars
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Bikes
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-        @click="selectTag($event)"
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div>
-        <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div>
-        <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div>
-        <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div>
-        <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div>
-          <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div>
-        <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div> <div
-            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
-            
-            Tag
-        </div>
+                            Sports
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer"
+                            value="history">
+
+                            History
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            News
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Cooking
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            National
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            DIY
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Kids
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Music
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Craft
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Science
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Cars
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Bikes
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div @click="selectTag($event)"
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
+                        <div
+                            class=" ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-gray-200 text-gray-700 rounded-full cursor-pointer">
+
+                            Tag
+                        </div>
                     </div>
 
                     <div class="flex gap-3">
-                        <button 
-                            @click="discard()"
-                            class="px-10 py-2.5 mt-8 border text-[16px] hover:bg-gray-100 rounded-sm"
-                        >
+                        <button @click="discard()"
+                            class="px-10 py-2.5 mt-8 border text-[16px] hover:bg-gray-100 rounded-sm">
                             Discard
                         </button>
-                        <button 
-                            @click="createPost()"
-                            class="px-10 py-2.5 mt-8 border text-[16px] text-white bg-[#f0cc2c] rounded-sm"
-                        >
+                        <button @click="createPost()"
+                            class="px-10 py-2.5 mt-8 border text-[16px] text-white bg-[#f0cc2c] rounded-sm">
                             Post
                         </button>
                     </div>
@@ -363,10 +341,7 @@ const onDrop = (e) => {
 
     let extention = file.value.name.substring(file.value.name.lastIndexOf('.') + 1);
 
-    if (extention !== 'mp4') {
-        errorType.value = 'file'
-        return
-    }
+
 
     fileDisplay.value = URL.createObjectURL(e.dataTransfer.files[0])
 }

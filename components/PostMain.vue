@@ -1,13 +1,13 @@
 <template>
     <div :id="`PostMain-${post.id}`" class="flex  ">
-        
+
         <div v-if="post.video == 'http://localhost:8000'" @click="isLoggedIn(post.user)" class="cursor-pointer">
             <img class="rounded-full max-h-[60px]" width="60" :src="post.user.image">
         </div>
 
-        <div class="pl-3 w-full px-4">
-            
-            <div v-if="post.video == 'http://localhost:8000'" class="flex items-center justify-between pb-0.5">
+        <div class="pl-3 w-full px-">
+
+            <div v-if="post.video == 'http://localhost:8000'" class="flex items-center justify-between pb-0.5 mt-[5%]">
                 <button @click="isLoggedIn(post.user)">
                     <span class="font-bold hover:underline cursor-pointer">
                         {{ $generalStore.allLowerCaseNoCaps(post.user.name) }}
@@ -26,7 +26,7 @@
             <div v-if="post.video == 'http://localhost:8000'"
                 class="commentText text-[30px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
 
-            <div v-if="post.video == 'http://localhost:8000'" class="flex items-center pb-0.5">
+            <div v-if="post.video == 'http://localhost:8000'" class="flex items-center pb-0.5 border-b-2 ">
 
                 <div :class="`${tags.trim().toLowerCase()}`" v-for="tags in temp" :key="tags"
                     class=" text-[14px] pb-0.5 pr-1">{{ tags.replace('All', '') }}</div>
@@ -37,24 +37,28 @@
             <div>
 
                 <div v-if="post.video == 'http://localhost:8000'"
-                
                     class="debate relative min-h-[480px] max-h-[580px] min-w-[265px]  items-center bg-white dark:bg-black-200 rounded-xl cursor-pointer">
 
-                    <div v-for="comment in post.comments" :key="comment" class="commentSection unset">
-                        <div class="commentArea w-full">
+                    <div v-for="comment in post.comments" :key="comment" class="commentSection unset  mt-2 max-w-[500px]">
+                        <div class="commentArea w-full border-l-2">
 
                             <NuxtLink :to="`/profile/${comment.user.id}`">
-                                <img class="rounded-full lg:mx-0 mx-auto" width="40" :src="comment.user.image">
+                                <img class="rounded-full mt-[5px]" width="20" :src="comment.user.image">
                             </NuxtLink>
                             <div class="ml-1 pt-0.5 w-full">
-                                <div class="text-[18px] font-semibold flex justify-between">
+                                <div class="text-[18px] flex justify-between">
                                     {{ comment.user.name }}
                                     <Icon v-if="$userStore.id === comment.user.id"
                                         @click="deleteComment($generalStore.selectedPost, comment.id)"
                                         class="cursor-pointer" name="material-symbols:delete-outline-sharp" size="25" />
                                 </div>
-                                <div class="text-[15px] font-light break-words max-w-[70%]">
+                                <div class="commentText text-[15px]   break-words max-w-[70%]">
                                     {{ comment.text }}
+                                </div>
+                                <div class="commentText text-[15px]   break-words max-w-[70%]">
+                                    <Icon name="mdi:lightbulb" size="15" />
+                                    <Icon @click="replyToComment()" name="mdi:message-reply-text" size="15" class="ml-3" />
+
                                 </div>
                             </div>
                         </div>
@@ -64,7 +68,7 @@
                 </div>
 
                 <div v-else
-                    class="relative min-h-[480px] max-h-[750px] max-w-[420px]  flex items-center bg-black rounded-xl ">
+                    class="relative min-h-[480px] max-h-[750px] max-w-[420px] justify-self-center items-center bg-black rounded-xl ">
 
                     <div class="absolute bottom-2 left-3 text-white mb-2 ml-2 z-2">
                         <div class="flex items-center  pb-0.5">
@@ -89,7 +93,7 @@
                         <div class="text-[15px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
 
                         <div class="flex items-center pb-0.5">
-
+                            800px800px
                             <div :class="`${tags.trim().toLowerCase()}`" v-for="tags in temp" :key="tags"
                                 class=" text-[14px] pb-0.5 pr-1">{{ tags.replace('All', '') }}</div>
                         </div>
@@ -102,8 +106,33 @@
                             <Icon name="mdi:lightbulb" size="20" />
                         </div>
                     </div>
-                    <video ref="video" loop muted class="rounded-xl object-cover mx-auto h-full" :src="post.video" />
+                    <div class="absolute bottom-0 right-0 text-white">
+                        <div class="pb-4 text-center">
+                            <div>
 
+                                <button @click="isLiked ? unlikePost(post) : likePost(post)" class=" p-2 cursor-pointer">
+                                    <Icon name="mdi:lightbulb" size="35" :color="isLiked ? '#f0cc2c' : ''" />
+                                </button>
+                            </div>
+                            <span class="text-xs text-gray-800 font-semibold">{{ post.likes.length }}</span>
+                        </div>
+
+                        <div class="pt-4 pb-4 text-center">
+                            <div class=" p-2 cursor-pointer">
+                                <Icon name="bx:bxs-message-rounded-dots" size="35" />
+                            </div>
+                            <span class="text-xs text-gray-800 font-semibold">43</span>
+                        </div>
+
+                        <div class="pt-4 text-center">
+                            <div class=" p-2 cursor-pointer">
+                                <Icon name="ri:share-forward-fill" size="35" />
+                            </div>
+                            <span class="text-xs text-gray-800 font-semibold">55</span>
+                        </div>
+                    </div>
+                    <video ref="video" loop muted class="rounded-xl object-cover mx-auto h-full " :src="post.video" />
+                   
 
                 </div>
 
@@ -138,34 +167,26 @@
 
                 </div>
                 <div v-else class="relative mr-[20px]">
-                    <div class="absolute bottom-0 right-0 text-white">
-                        <div class="pb-4 text-center">
-                            <div>
-
-                                <button @click="isLiked ? unlikePost(post) : likePost(post)" class=" p-2 cursor-pointer">
-                                    <Icon name="mdi:lightbulb" size="35" :color="isLiked ? '#f0cc2c' : ''" />
-                                </button>
-                            </div>
-                            <span class="text-xs text-gray-800 font-semibold">{{ post.likes.length }}</span>
-                        </div>
-
-                        <div class="pt-4 pb-4 text-center">
-                            <div class=" p-2 cursor-pointer">
-                                <Icon name="bx:bxs-message-rounded-dots" size="35" />
-                            </div>
-                            <span class="text-xs text-gray-800 font-semibold">43</span>
-                        </div>
-
-                        <div class="pt-4 text-center">
-                            <div class=" p-2 cursor-pointer">
-                                <Icon name="ri:share-forward-fill" size="35" />
-                            </div>
-                            <span class="text-xs text-gray-800 font-semibold">55</span>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
         </div>
+    </div>
+    <div  v-if="replyActive == true"  class="sm:w-[60%] w-full">
+        <textarea cols="30" rows="4" maxlength="80" class="
+                                        resize-none
+                                        w-full
+                                        text-gray-800
+                                        border
+                                        border-gray-300
+                                        rounded-md
+                                        py-2.5
+                                        px-3
+                                        focus:outline-none
+                                    "></textarea>
+        <button class="flex items-center bg-[#f0cc2c] text-white border rounded-md ml-3 px-3 py-[6px]">
+            <span class="mx-4 font-medium text-[15px]">Post reply</span>
+        </button>
     </div>
 </template>
 
@@ -174,7 +195,8 @@ const props = defineProps(['post', 'user'])
 const { $generalStore, $userStore, $profileStore } = useNuxtApp();
 const { post, user } = toRefs(props)
 const router = useRouter()
-let comment = ref(null)
+var replyActive = false;
+let comment = ref(null);
 var str = post.value.tags;
 var temp = new Array();
 temp = str.split(",");
@@ -280,6 +302,16 @@ const follow = async (user) => {
     }
 }
 
+const replyToComment = () => {
+    if (replyActive == false) {
+        console.log("reached if");
+        replyActive = true;
+    } else {
+        replyActive = false;
+    }
+    console.log("reply to comment", $generalStore.replyActive);
+}
+
 // const unfollow = async (user) => {
 //     if (!$userStore.id) {
 //         $generalStore.isLoginOpen = true
@@ -343,7 +375,12 @@ const displayPost = (post) => {
 }
 
 .commentArea {
-    max-width: 350px;
+    max-width: 800px;
+
     display: -webkit-box;
+}
+
+.commentText {
+    overflow-wrap: anywhere;
 }
 </style>

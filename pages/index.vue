@@ -5,20 +5,20 @@
 
 <template>
     <MainLayout>
-            <vue-scroll-snap class="grid justify-self-center">
+        <vue-scroll-snap class="grid justify-self-center">
 
-                <div v-for="post in $generalStore.posts" :key="post" class=" pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
-                    <div v-if="post.video == 'http://localhost:8000'"
-                        :class="`item bg-gradient-to-br from-white to-white`" class="w-[700px]">
-                        <PostMain v-if="post" :post="post" />
+            <div v-for="post in $generalStore.posts" :key="post"
+                class=" pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
+                <div v-if="post.video == 'http://localhost:8000'" class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
+                    <PostMain v-if="post" :post="post" />
 
-                    </div>
-                    <div v-else class="item w-[450px]" >
-                        <PostMain v-if="post" :post="post" />
-                    </div>
                 </div>
+                <div v-else class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
+                    <PostMain v-if="post" :post="post" class="mt-3 grid" />
+                </div>
+            </div>
 
-            </vue-scroll-snap>
+        </vue-scroll-snap>
     </MainLayout>
 </template>
 
@@ -40,11 +40,9 @@ onMounted(async () => {
 <style>
 .item {
     /* Set the minimum height of the items to be the same as the height of the scroll-snap-container.*/
-   
+
     min-height: 900px;
-    border-radius: 10px;
-    border-color: seashell;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    /* border-color: seashell; */
 }
 
 #backgroundGrade {

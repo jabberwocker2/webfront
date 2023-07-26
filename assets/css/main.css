@@ -10,10 +10,19 @@ body {
     #SideNavMain {
         display: none;
     }
+    #TopNav {
+        position: absolute;
+        bottom: 0;
+    }
 
+    .scrolltags {
+        margin-left: 0;
+        margin-right: 0;
+
+    }
     .scroll-snap-container {
         margin-top: 0 !important;
-          height: 800px;
-    width: 450px;
+        height: 800px;
+        width: 450px;
     }
 }

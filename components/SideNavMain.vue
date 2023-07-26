@@ -7,7 +7,7 @@
         
         <div class="lg:w-full w-[55px] mx-auto">
             <NuxtLink to="/">
-                <MenuItem iconString="For You" colorString="#f0cc2c" sizeString="30"/>
+                <MenuItem iconString="For You" colorString="black" sizeString="30"/>
             </NuxtLink>
             <MenuItem iconString="Following" colorString="#000000" sizeString="27"/>
 
@@ -30,7 +30,7 @@
             </div>
 
 
-            <button class="lg:block hidden text-[#f0cc2c] pt-1.5 pl-2 text-[13px]">
+            <button class="lg:block hidden text-[black] pt-1.5 pl-2 text-[13px]">
                 See all
             </button>
 
@@ -52,7 +52,7 @@
                     </div>
                 </div> -->
 
-                <button class="lg:block hidden text-[#f0cc2c] pt-1.5 pl-2 text-[13px]">See more</button>
+                <button class="lg:block hidden text-[black] pt-1.5 pl-2 text-[13px]">See more</button>
 
             </div>
             <div class="lg:block hidden border-b lg:ml-2 mt-2" />
