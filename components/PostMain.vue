@@ -1,13 +1,13 @@
 <template>
     <div :id="`PostMain-${post.id}`" class="flex  ">
 
-        <div v-if="post.video == 'http://localhost:8000'" @click="isLoggedIn(post.user)" class="cursor-pointer">
+        <div v-if="post.video == 'http://16.171.150.205'" @click="isLoggedIn(post.user)" class="cursor-pointer">
             <img class="rounded-full max-h-[60px]" width="60" :src="post.user.image">
         </div>
 
         <div class="pl-3 w-full px-">
 
-            <div v-if="post.video == 'http://localhost:8000'" class="flex items-center justify-between pb-0.5 mt-[5%]">
+            <div v-if="post.video == 'http://16.171.150.205'" class="flex items-center justify-between pb-0.5 mt-[5%]">
                 <button @click="isLoggedIn(post.user)">
                     <span class="font-bold hover:underline cursor-pointer">
                         {{ $generalStore.allLowerCaseNoCaps(post.user.name) }}
@@ -23,10 +23,10 @@
                 </button>
             </div>
 
-            <div v-if="post.video == 'http://localhost:8000'"
+            <div v-if="post.video == 'http://16.171.150.205'"
                 class="commentText text-[30px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
 
-            <div v-if="post.video == 'http://localhost:8000'" class="flex items-center pb-0.5 border-b-2 ">
+            <div v-if="post.video == 'http://16.171.150.205'" class="flex items-center pb-0.5 border-b-2 ">
 
                 <div :class="`${tags.trim().toLowerCase()}`" v-for="tags in temp" :key="tags"
                     class=" text-[14px] pb-0.5 pr-1">{{ tags.replace('All', '') }}</div>
@@ -36,7 +36,7 @@
 
             <div>
 
-                <div v-if="post.video == 'http://localhost:8000'"
+                <div v-if="post.video == 'http://16.171.150.205'"
                     class="debate relative min-h-[480px] max-h-[580px] min-w-[265px]  items-center bg-white dark:bg-black-200 rounded-xl cursor-pointer">
 
                     <div v-for="comment in post.comments" :key="comment" class="commentSection unset  mt-2 max-w-[500px]">
@@ -88,7 +88,7 @@
                             </button>
                         </div>
 
-                        <div v-if="post.video == 'http://localhost:8000'"
+                        <div v-if="post.video == 'http://16.171.150.205'"
                             class="text-[30px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
                         <div class="text-[15px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
 
@@ -99,7 +99,7 @@
                         </div>
 
 
-                        <div v-if="post.video != 'http://localhost:8000'"
+                        <div v-if="post.video != 'http://16.171.150.205'"
                             class="text-[14px] pb-0.5 flex items-center font-semibold">
                             <Icon name="mdi:music" size="17" />
                             <div class="px-1">original sound - AWESOME</div>
@@ -136,7 +136,7 @@
 
                 </div>
 
-                <div v-if="post.video == 'http://localhost:8000'" class="relative mr-[20px]">
+                <div v-if="post.video == 'http://16.171.150.205'" class="relative mr-[20px]">
                     <div class="absolute bottom-0 right-0">
                         <div class="pb-4 text-center">
                             <div>
@@ -204,8 +204,8 @@ let video = ref(null)
 console.log(post);
 console.log($generalStore.selectedTags, "selected tags");
 
-console.log(post.value.video != 'http://localhost:8000');
-if (post.value.video != 'http://localhost:8000') {
+console.log(post.value.video != 'http://16.171.150.205');
+if (post.value.video != 'http://16.171.150.205') {
     onMounted(() => {
         $generalStore.selectedPost = post.value;
         let observer = new IntersectionObserver(function (entries) {
