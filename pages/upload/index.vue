@@ -66,7 +66,6 @@
                         relative
                     ">
                     <div class="bg-black h-full w-full" />
-                    <img class="absolute z-20 pointer-events-none" src="~/assets/images/mobile-case.png">
 
                     <video autoplay loop muted class="absolute rounded-xl object-cover z-10 p-[13px] w-full h-full"
                         :src="fileDisplay" />
