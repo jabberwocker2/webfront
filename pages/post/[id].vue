@@ -63,7 +63,7 @@
         <div 
             id="InfoSection" 
             v-if="$generalStore.selectedPost" 
-            class="lg:max-w-[550px] relative w-full h-full bg-white"
+            class="lg:max-w-[550px] relative w-full h-full bg-white dark:bg-black"
         >
 
             <div class="py-7" />
@@ -183,7 +183,7 @@
             <div 
                 id="CreateComment" 
                 v-if="$userStore.id"
-                class="absolute flex items-center justify-between bottom-0 bg-white h-[85px] lg:max-w-[550px] w-full py-5 px-8 border-t-2"
+                class="absolute flex items-center justify-between bottom-0 bg-white dark:bg-black h-[85px] lg:max-w-[550px] w-full py-5 px-8 border-t-2"
             >
                 <div 
                     :class="inputFocused ? 'border-2 border-gray-400' : 'border-2 border-[#F1F1F2]'" 

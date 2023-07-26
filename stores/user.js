@@ -9,7 +9,8 @@ export const useUserStore = defineStore('user', {
     id: '',
     name: '',
     bio: '',
-    image: ''
+    image: '',
+    color:'gray'
   }),
   actions: {
 

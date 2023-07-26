@@ -14,6 +14,19 @@ export const useGeneralStore = defineStore('general', {
     posts: null,
     suggested: null,
     following: null,
+    sportsTag:false,
+    craftsTag:false,
+    carsTag:false,
+    bikesTag:false,
+    scienceTag:false,
+    historyTag:false,
+    nationalTag:false,
+    DIYTag:false,
+    kidsTag:false,
+    musicTag:false,
+    newsTag:false,
+    selectedTags:null,
+    replyActive:false
   }),
   actions: {
     bodySwitch(val) {
@@ -58,6 +71,7 @@ export const useGeneralStore = defineStore('general', {
       let res = await $axios.get(`/api/posts/${id}`)
 
       this.$state.selectedPost = res.data.post[0]
+      
       this.$state.ids = res.data.ids
     },
 
@@ -82,8 +96,8 @@ export const useGeneralStore = defineStore('general', {
       }
     },
 
-    async getAllUsersAndPosts() {
-      let res = await $axios.get('/api/home')
+    async getAllUsersAndPosts(tags) {
+      let res = await $axios.get('/api/home?tags='+tags)
       this.posts = res.data
     }
   },
