@@ -10,7 +10,7 @@ export const useUserStore = defineStore('user', {
     name: '',
     bio: '',
     image: '',
-    color:'gray'
+    color: 'gray'
   }),
   actions: {
 
@@ -36,7 +36,7 @@ export const useUserStore = defineStore('user', {
 
     async getUser() {
       let res = await $axios.get('/api/logged-in-user')
-      
+
       this.$state.id = res.data[0].id
       this.$state.name = res.data[0].name
       this.$state.bio = res.data[0].bio
@@ -62,10 +62,24 @@ export const useUserStore = defineStore('user', {
       return await $axios.delete(`/api/posts/${post.id}`)
     },
 
-    async addComment(post, comment) {
+    async addComment(post, comment, parent_id, level_id, main_parent_id) {
+      if (!parent_id) {
+        parent_id = 0;
+      }
+
+      if (!level_id) {
+        level_id = 0;
+      }
+
+      if (!main_parent_id) {
+        main_parent_id = 0;
+      }
       let res = await $axios.post('/api/comments', {
         post_id: post.id,
-        comment: comment
+        comment: comment,
+        comment_id: parent_id,
+        level: level_id,
+        mainParentId: main_parent_id
       })
 
       if (res.status === 200) {
@@ -87,11 +101,11 @@ export const useUserStore = defineStore('user', {
       let res = await $axios.get(`/api/profiles/${post.user.id}`)
 
       for (let i = 0; i < res.data.posts.length; i++) {
-          const updatePost = res.data.posts[i];
+        const updatePost = res.data.posts[i];
 
-          if (post.id == updatePost.id) {
-              useGeneralStore().selectedPost.comments = updatePost.comments
-          }
+        if (post.id == updatePost.id) {
+          useGeneralStore().selectedPost.comments = updatePost.comments
+        }
       }
     },
 
@@ -126,9 +140,9 @@ export const useUserStore = defineStore('user', {
       singlePost.likes.forEach(like => {
         if (like.user_id === this.id) { deleteLike = like }
       });
-      
+
       let res = await $axios.delete('/api/likes/' + deleteLike.id)
-      
+
       for (let i = 0; i < singlePost.likes.length; i++) {
         const like = singlePost.likes[i];
         if (like.id === res.data.like.id) { singlePost.likes.splice(i, 1); }
@@ -149,7 +163,7 @@ export const useUserStore = defineStore('user', {
       this.resetUser()
     },
 
-    resetUser() {      
+    resetUser() {
       this.$state.id = ''
       this.$state.name = ''
       this.$state.email = ''
@@ -159,5 +173,5 @@ export const useUserStore = defineStore('user', {
 
   },
   persist: true,
-//   }
+  //   }
 })
