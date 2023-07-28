@@ -83,7 +83,7 @@ export const useUserStore = defineStore('user', {
       })
 
       if (res.status === 200) {
-        await this.updateComments(post)
+        // await this.updateComments(post)
       }
     },
 

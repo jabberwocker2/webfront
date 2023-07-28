@@ -252,7 +252,7 @@ if (post.value.video != 'http://localhost:8000') {
 //     }
 // }
 onMounted(() => {
-    let mainDiv = document.getElementById("thoughtContainer"+post.value.id);
+    let mainDiv = document.getElementById("thoughtContainer" + post.value.id);
     let commentBlock = document.createElement('div');
     mainDiv.appendChild(commentBlock);
 
@@ -266,7 +266,7 @@ onMounted(() => {
             commentBlock.appendChild(commentDiv);
             commentDiv.appendChild(level1comment);
             commentDiv.appendChild(replyButton);
-            commentDiv.setAttribute("id",post.value.id+ "_"+post.value.comments[i].id)
+            commentDiv.setAttribute("id", post.value.id + "_" + post.value.comments[i].id)
             commentDiv.style.display = "flex";
             replyButton.addEventListener('click', () => replyToComment(post.value.id, "", post.value.comments[i], "replyComment", replyButton.getAttribute('id'), post.value.comments[i].id))
             replyButton.innerHTML = "reply";
@@ -277,7 +277,7 @@ onMounted(() => {
 
         for (let j = 0; j < post.value.comments.length; j++) {
             if (post.value.comments[i].id == post.value.comments[j].parent_id) {
-                let parentCommentDiv = document.createElement('div');
+                var parentCommentDiv = document.createElement('div');
                 let commentDiv = document.createElement('div');
                 parentCommentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                 parentCommentDiv.appendChild(commentDiv);
@@ -307,14 +307,14 @@ onMounted(() => {
                     setTimeout(() => {
                         var mainParent = document.createElement('div');
                         var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
-                        commentDiv.style.marginLeft = "20px";
+                        commentDiv.style.marginLeft = "25px";
                         console.log("reached level 2 wiht end ", post.value.comments[j].text, divToAppend)
                         mainParent.appendChild(commentDiv)
                         divToAppend.appendChild(mainParent);
                         divToAppend.style.borderLeft = "1px solid gray"
                         mainParent.setAttribute("id", "reply_" + post.value.comments[j].id)
                         replyButton.setAttribute("id", 3)
-                    }, 100)
+                    }, 20)
 
                 } else if (post.value.comments[j].level_id == 3) {
                     setTimeout(() => {
@@ -323,10 +323,95 @@ onMounted(() => {
                         commentDiv.style.marginLeft = "30px";
                         console.log("reached level 3 wiht end ", post.value.comments[j].text, divToAppend)
                         replyButton.setAttribute("id", 4)
+                        commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
-                        divToAppend.style.marginLeft = "10px";
+                        divToAppend.style.marginLeft = "25px";
                         divToAppend.style.borderLeft = "1px solid gray";
-                    }, 200)
+                    }, 25)
+                } else if (post.value.comments[j].level_id == 4) {
+                    setTimeout(() => {
+                        console.log(post.value.comments[j].parent_id, "lv 4");
+                        var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
+                        commentDiv.style.marginLeft = "40px";
+                        console.log("reached level 3 wiht end ", post.value.comments[j].text, divToAppend)
+                        replyButton.setAttribute("id", 5)
+                        commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
+                        divToAppend.appendChild(commentDiv);
+                        divToAppend.style.marginLeft = "25px";
+                        divToAppend.style.borderLeft = "1px solid gray";
+                    }, 30)
+                } else if (post.value.comments[j].level_id == 5) {
+                    setTimeout(() => {
+                        console.log(post.value.comments[j].parent_id, "lv 4");
+                        var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
+                        commentDiv.style.marginLeft = "50px";
+                        console.log("reached level 3 wiht end ", post.value.comments[j].text, divToAppend)
+                        replyButton.setAttribute("id", 6)
+                        commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
+                        divToAppend.appendChild(commentDiv);
+                        divToAppend.style.marginLeft = "25px";
+                        divToAppend.style.borderLeft = "1px solid gray";
+                    }, 35)
+                } else if (post.value.comments[j].level_id == 6) {
+                    setTimeout(() => {
+                        console.log(post.value.comments[j].parent_id, "lv 4");
+                        var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
+                        commentDiv.style.marginLeft = "60px";
+                        console.log("reached level 3 wiht end ", post.value.comments[j].text, divToAppend)
+                        replyButton.setAttribute("id", 7)
+                        commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
+                        divToAppend.appendChild(commentDiv);
+                        divToAppend.style.marginLeft = "25px";
+                        divToAppend.style.borderLeft = "1px solid gray";
+                    }, 40)
+                } else if (post.value.comments[j].level_id == 7) {
+                    setTimeout(() => {
+                        console.log(post.value.comments[j].parent_id, "lv 4");
+                        var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
+                        commentDiv.style.marginLeft = "70px";
+                        console.log("reached level 3 wiht end ", post.value.comments[j].text, divToAppend)
+                        replyButton.setAttribute("id", 8)
+                        commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
+                        divToAppend.appendChild(commentDiv);
+                        divToAppend.style.marginLeft = "25px";
+                        divToAppend.style.borderLeft = "1px solid gray";
+                    }, 45)
+                } else if (post.value.comments[j].level_id == 8) {
+                    setTimeout(() => {
+                        console.log(post.value.comments[j].parent_id, "lv 4");
+                        var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
+                        commentDiv.style.marginLeft = "70px";
+                        console.log("reached level 3 wiht end ", post.value.comments[j].text, divToAppend)
+                        replyButton.setAttribute("id", 9)
+                        commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
+                        divToAppend.appendChild(commentDiv);
+                        divToAppend.style.marginLeft = "25px";
+                        divToAppend.style.borderLeft = "1px solid gray";
+                    }, 50)
+                } else if (post.value.comments[j].level_id == 9) {
+                    setTimeout(() => {
+                        console.log(post.value.comments[j].parent_id, "lv 4");
+                        var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
+                        commentDiv.style.marginLeft = "70px";
+                        console.log("reached level 3 wiht end ", post.value.comments[j].text, divToAppend)
+                        replyButton.setAttribute("id", 10)
+                        commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
+                        divToAppend.appendChild(commentDiv);
+                        divToAppend.style.marginLeft = "25px";
+                        divToAppend.style.borderLeft = "1px solid gray";
+                    }, 55)
+                }else if (post.value.comments[j].level_id == 10) {
+                    setTimeout(() => {
+                        console.log(post.value.comments[j].parent_id, "lv 4");
+                        var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
+                        commentDiv.style.marginLeft = "70px";
+                        console.log("reached level 3 wiht end ", post.value.comments[j].text, divToAppend)
+                        replyButton.setAttribute("id", 11)
+                        commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
+                        divToAppend.appendChild(commentDiv);
+                        divToAppend.style.marginLeft = "25px";
+                        divToAppend.style.borderLeft = "1px solid gray";
+                    }, 60)
                 }
 
             }
