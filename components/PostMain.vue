@@ -69,7 +69,7 @@
 
                 </div>
 
-                <div v-else
+                <div v-else :id="`thoughtContainer${post.id}`"
                     class="relative min-h-[480px] max-h-[750px] max-w-[420px] justify-self-center items-center bg-black rounded-xl ">
 
                     <div class="absolute bottom-2 left-3 text-white mb-2 ml-2 z-2">
@@ -175,9 +175,10 @@
             </div>
         </div>
     </div>
-    <div class=" sm:w-[60%] w-full " :id="`commentReplyArea_${post.id}`" style="display: none;">
-        <textarea cols="30" rows="4" maxlength="80" class="
+    <div class="postCommentTextArea sm:w-[50%] lg:w-[80%] w-full " :id="`commentReplyArea_${post.id}`" style="margin: auto;display: none;">
+        <textarea cols="50" rows="4" maxlength="80" class="
                                         resize-none
+                                        
                                         w-full
                                         text-gray-800
                                         border
@@ -188,8 +189,8 @@
                                         focus:outline-none
                                     "></textarea>
         <button @click="postComment(post, $event, parent_comment_id, level_id, main_parent_id)"
-            class="flex items-center bg-[#f0cc2c] text-white border rounded-md ml-3 px-3 py-[6px]">
-            <span class="mx-4 font-medium text-[15px]">Post reply</span>
+            class="  flex items-center bg-[white] text-black  rounded-full  px-3 " >
+            <Icon name="ri:share-forward-fill" size="35" />
         </button>
     </div>
 </template>
@@ -259,15 +260,30 @@ onMounted(() => {
     for (let i = 0; i < post.value.comments.length; i++) {
 
         if (post.value.comments[i].level_id == 0) {
+            let userDiv = document.createElement('div');
+            let userName = document.createElement('p');
+            var oImg = document.createElement("img");
+            oImg.setAttribute('src', post.value.comments[i].user.image);
+            oImg.setAttribute('alt', 'na');
+            oImg.setAttribute('height', '20px');
+            oImg.setAttribute('width', '20px');
+            oImg.style.borderRadius = "10px";
+            oImg.style.marginRight = "5px";
+            userDiv.appendChild(oImg);
+            userDiv.appendChild(userName);
+            userDiv.style.display = "flex";
             let level1comment = document.createElement('p');
             let replyButton = document.createElement('button');
             replyButton.setAttribute("id", 1)
             let commentDiv = document.createElement('div');
             commentBlock.appendChild(commentDiv);
+            commentDiv.appendChild(userDiv);
+            userName.innerHTML = post.value.comments[i].user.name
             commentDiv.appendChild(level1comment);
             commentDiv.appendChild(replyButton);
+
             commentDiv.setAttribute("id", post.value.id + "_" + post.value.comments[i].id)
-            commentDiv.style.display = "flex";
+            commentDiv.style.display = "";
             replyButton.addEventListener('click', () => replyToComment(post.value.id, "", post.value.comments[i], "replyComment", replyButton.getAttribute('id'), post.value.comments[i].id))
             replyButton.innerHTML = "reply";
             replyButton.style.marginLeft = "10px";
@@ -279,6 +295,7 @@ onMounted(() => {
             if (post.value.comments[i].id == post.value.comments[j].parent_id) {
                 var parentCommentDiv = document.createElement('div');
                 let commentDiv = document.createElement('div');
+                let username = document.createElement('p');
                 parentCommentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                 parentCommentDiv.appendChild(commentDiv);
                 parentCommentDiv.style.borderLeft = "1px solid gray";
@@ -289,12 +306,25 @@ onMounted(() => {
                 replyButton.setAttribute("id", 2)
                 replyButton.addEventListener('click', () => replyToComment(post.value.id, "", post.value.comments[j], "replyComment", replyButton.getAttribute('id'), post.value.comments[i].id))
                 replyButton.innerHTML = 'reply';
+                let detailContainer = document.createElement("div");
+                var oImg = document.createElement("img");
+                oImg.setAttribute('src', post.value.comments[j].user.image);
+                oImg.setAttribute('alt', 'na');
+                oImg.setAttribute('height', '20px');
+                oImg.setAttribute('width', '20px');
+                oImg.style.borderRadius = "10px";
+                oImg.style.marginRight = "5px";
+                detailContainer.appendChild(oImg);
+                detailContainer.appendChild(username);
+                detailContainer.style.display = "flex";
+                reply.style.marginLeft = "5px";
+                commentDiv.appendChild(detailContainer);
                 commentDiv.appendChild(reply);
                 commentDiv.appendChild(replyButton);
                 commentDiv.style.marginLeft = "10px";
                 commentDiv.style.marginTop = "10px";
                 commentDiv.style.marginBottom = "10px";
-
+                username.innerHTML = post.value.comments[j].user.name
                 replyButton.style.marginLeft = "20px"
                 replyButton.style.fontSize = "12px"
 
@@ -311,7 +341,7 @@ onMounted(() => {
                         console.log("reached level 2 wiht end ", post.value.comments[j].text, divToAppend)
                         mainParent.appendChild(commentDiv)
                         divToAppend.appendChild(mainParent);
-                        divToAppend.style.borderLeft = "1px solid gray"
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb"
                         mainParent.setAttribute("id", "reply_" + post.value.comments[j].id)
                         replyButton.setAttribute("id", 3)
                     }, 20)
@@ -326,7 +356,7 @@ onMounted(() => {
                         commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
                         divToAppend.style.marginLeft = "25px";
-                        divToAppend.style.borderLeft = "1px solid gray";
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb";
                     }, 25)
                 } else if (post.value.comments[j].level_id == 4) {
                     setTimeout(() => {
@@ -338,7 +368,7 @@ onMounted(() => {
                         commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
                         divToAppend.style.marginLeft = "25px";
-                        divToAppend.style.borderLeft = "1px solid gray";
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb";
                     }, 30)
                 } else if (post.value.comments[j].level_id == 5) {
                     setTimeout(() => {
@@ -350,7 +380,7 @@ onMounted(() => {
                         commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
                         divToAppend.style.marginLeft = "25px";
-                        divToAppend.style.borderLeft = "1px solid gray";
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb";
                     }, 35)
                 } else if (post.value.comments[j].level_id == 6) {
                     setTimeout(() => {
@@ -362,7 +392,7 @@ onMounted(() => {
                         commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
                         divToAppend.style.marginLeft = "25px";
-                        divToAppend.style.borderLeft = "1px solid gray";
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb";
                     }, 40)
                 } else if (post.value.comments[j].level_id == 7) {
                     setTimeout(() => {
@@ -374,7 +404,7 @@ onMounted(() => {
                         commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
                         divToAppend.style.marginLeft = "25px";
-                        divToAppend.style.borderLeft = "1px solid gray";
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb";
                     }, 45)
                 } else if (post.value.comments[j].level_id == 8) {
                     setTimeout(() => {
@@ -386,7 +416,7 @@ onMounted(() => {
                         commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
                         divToAppend.style.marginLeft = "25px";
-                        divToAppend.style.borderLeft = "1px solid gray";
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb";
                     }, 50)
                 } else if (post.value.comments[j].level_id == 9) {
                     setTimeout(() => {
@@ -398,9 +428,9 @@ onMounted(() => {
                         commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
                         divToAppend.style.marginLeft = "25px";
-                        divToAppend.style.borderLeft = "1px solid gray";
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb";
                     }, 55)
-                }else if (post.value.comments[j].level_id == 10) {
+                } else if (post.value.comments[j].level_id == 10) {
                     setTimeout(() => {
                         console.log(post.value.comments[j].parent_id, "lv 4");
                         var divToAppend = document.getElementById("reply_" + post.value.comments[j].parent_id);
@@ -410,7 +440,7 @@ onMounted(() => {
                         commentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                         divToAppend.appendChild(commentDiv);
                         divToAppend.style.marginLeft = "25px";
-                        divToAppend.style.borderLeft = "1px solid gray";
+                        divToAppend.style.borderLeft = "1px solid #e5e7eb";
                     }, 60)
                 }
 
@@ -494,7 +524,7 @@ const replyToComment = (post, eventClick, comment, replyMode, level = null, main
         main_parent_id = mainParentId;
     }
     if (document.getElementById("commentReplyArea_" + post).style.display == "none") {
-        document.getElementById("commentReplyArea_" + post).style.display = "block";
+        document.getElementById("commentReplyArea_" + post).style.display = "flex";
         console.log("reached if");
     } else {
         document.getElementById("commentReplyArea_" + post).style.display = "none";
@@ -556,7 +586,7 @@ const postComment = async (id, elementButton, parent_id, level_id, mainParentId)
 
 <style>
 .debate {
-    max-height: 500px;
+    max-height: 550px;
     overflow: scroll;
 }
 

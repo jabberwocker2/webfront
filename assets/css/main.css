@@ -10,6 +10,7 @@ body {
     #SideNavMain {
         display: none;
     }
+
     #TopNav {
         position: absolute;
         bottom: 0;
@@ -20,9 +21,18 @@ body {
         margin-right: 0;
 
     }
+
     .scroll-snap-container {
         margin-top: 0 !important;
         height: 800px;
+        width: 450px;
+    }
+
+    .postCommentTextArea {
+        max-width: 463px !important;
+        float: left;
+    }
+    .item {
         width: 450px;
     }
 }
