@@ -48,7 +48,7 @@ const searchWithTags = (tags, component) => {
         document.getElementById(component.target.id).style.backgroundColor = "";
         document.getElementById(component.target.id).style.color = "#004151";
     } else {
-        document.getElementById(component.target.id).style.backgroundColor = "#f0cc2c";
+        document.getElementById(component.target.id).style.backgroundColor = "black";
         document.getElementById(component.target.id).style.color = "white";
 
     }

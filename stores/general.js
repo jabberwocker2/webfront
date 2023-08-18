@@ -26,7 +26,8 @@ export const useGeneralStore = defineStore('general', {
     musicTag:false,
     newsTag:false,
     selectedTags:null,
-    replyActive:false
+    replyActive:false,
+    comments:null
   }),
   actions: {
     bodySwitch(val) {
@@ -75,15 +76,17 @@ export const useGeneralStore = defineStore('general', {
       this.$state.ids = res.data.ids
     },
 
-    async getRandomUsers(type) {
-      let res = await $axios.get(`/api/get-random-users`)
+    async getRandomUsers(type,id=null) {
+      let res = await $axios.get(`/api/get-random-users?id=`+id)
 
       if (type === 'suggested') {
         this.suggested = res.data.suggested
       }
 
       if (type === 'following') {
-        this.following = res.data.following
+      this.following = res.data.following
+      console.log(this.following,"this follow");
+
       }
     },
 
@@ -99,6 +102,7 @@ export const useGeneralStore = defineStore('general', {
     async getAllUsersAndPosts(tags) {
       let res = await $axios.get('/api/home?tags='+tags)
       this.posts = res.data
+      this.comments = this.posts.comments
     }
   },
   persist: true,

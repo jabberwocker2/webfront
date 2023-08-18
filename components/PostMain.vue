@@ -17,16 +17,31 @@
                     </span>
                 </button>
 
-                <button @click="follow(user)"
+                <button @click="follow(post.user.id)"
                     class="border text-[15px] px-[21px] py-0.5 hover:bg-[#ffeef2] font-semibold rounded-md">
                     Follow
                 </button>
             </div>
 
             <div v-if="post.video == 'http://localhost:8000'"
-                class="commentText text-[30px] pb-0.5 break-words md:max-w-[400px] max-w-[300px]">{{ post.text }}</div>
+                class="flex commentText text-[30px] pb-0.5 break-words md:max-w-[500px] max-w-[500px] transition-[margin-top] duration-500 ease-in-out cursor-pointer"
+                :id="`commentText${post.id}`">{{ post.text }}<div class="flex relative float-right">
+                    <div class="w-[50px] h-[2px] bg-slate-200 ml-[10px] mr-[10px] self-center"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+                        :id="`openThread${post.id}`" style="display: block;border: 1px solid lightgray; border-radius: 20px;" class="bi bi-plus self-center text-[gray] "
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+                        class=" bi bi-dash self-center text-[gray]" style="display: none;border: 1px solid lightgray; border-radius: 20px;" :id="`closeThread${post.id}`"
+                        viewBox="0 0 16 16">
+                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
+                    </svg>
+                </div>
+            </div>
 
-            <div v-if="post.video == 'http://localhost:8000'" class="flex items-center pb-0.5 border-b-2 ">
+            <div v-if="post.video === 'http://localhost:8000'" class="flex items-center pb-0.5  ">
 
                 <div :class="`${tags.trim().toLowerCase()}`" v-for="tags in temp" :key="tags"
                     class=" text-[14px] pb-0.5 pr-1">{{ tags.replace('All', '') }}</div>
@@ -34,38 +49,42 @@
 
 
 
-            <div>
+            <div class="flex">
 
                 <div :id="`thoughtContainer${post.id}`" v-if="post.video == 'http://localhost:8000'"
-                    class="debate relative min-h-[480px] max-h-[580px] min-w-[265px]  items-center bg-white dark:bg-black-200 rounded-xl cursor-pointer">
-
-                    <!-- <div v-for="comment in post.comments" :key="comment" class="commentSection unset  mt-2 max-w-[500px]">
-                        <div v-if="comment.parent_id == 0" class="commentArea w-full border-l-2"
-                            :id="`comment_id${comment.id}`">
-
-                            <NuxtLink :to="`/profile/${comment.user.id}`">
-                                <img class="rounded-full mt-[5px]" width="20" :src="comment.user.image">
-                            </NuxtLink>
-                            <div class="ml-1 pt-0.5 w-full">
-                                <div class="text-[18px] flex justify-between">
-                                    {{ comment.user.name }}
-                                    <Icon v-if="$userStore.id === comment.user.id"
-                                        @click="deleteComment($generalStore.selectedPost, comment.id)"
-                                        class="cursor-pointer" name="material-symbols:delete-outline-sharp" size="25" />
-                                </div>
-                                <div class="commentText text-[15px]   break-words max-w-[70%]">
-                                    {{ comment.text }}
-                                </div>
-                                <div class="commentText text-[15px]   break-words max-w-[70%]">
-                                    <Icon name="mdi:lightbulb" size="15" />
-                                
-
-                                </div>
-                            </div>
-
+                    class="debate relative min-h-[600px] max-h-[0px] min-w-[365px]  items-center bg-white dark:bg-black-200  rounded-xl cursor-pointer pt-[20px] transition-[max-height] duration-500 ease-in-out">
+                        <div v-for="comment in post.comments"  :key="comment" class="commentSection overflow-y-visible">
+                            <CommentTile v-if="comment.level_id === 0" :comment="comment" :posts="post"  />
                         </div>
 
-                    </div> -->
+
+<!--                    <div v-for="comment in post.comments" :key="comment" class="commentSection unset  mt-2 max-w-[500px]">-->
+<!--                        <div v-if="comment.parent_id == 0" class="commentArea w-full border-l-2"-->
+<!--                            :id="`comment_id${comment.id}`">-->
+
+<!--                            <NuxtLink :to="`/profile/${comment.user.id}`">-->
+<!--                                <img class="rounded-full mt-[5px]" width="20" :src="comment.user.image">-->
+<!--                            </NuxtLink>-->
+<!--                            <div class="ml-1 pt-0.5 w-full">-->
+<!--                                <div class="text-[18px] flex justify-between">-->
+<!--                                    {{ comment.user.name }}-->
+<!--                                    <Icon v-if="$userStore.id === comment.user.id"-->
+<!--                                        @click="deleteComment($generalStore.selectedPost, comment.id)"-->
+<!--                                        class="cursor-pointer" name="material-symbols:delete-outline-sharp" size="25" />-->
+<!--                                </div>-->
+<!--                                <div class="commentText text-[15px]   break-words max-w-[70%]">-->
+<!--                                    {{ comment.text }}-->
+<!--                                </div>-->
+<!--                                <div class="commentText text-[15px]   break-words max-w-[70%]">-->
+<!--                                    <Icon name="mdi:lightbulb" size="15" />-->
+<!--                                -->
+
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                        </div>-->
+
+<!--                    </div>-->
 
                 </div>
 
@@ -123,7 +142,7 @@
                             <div class=" p-2 cursor-pointer">
                                 <Icon name="bx:bxs-message-rounded-dots" size="35" />
                             </div>
-                            <span class="text-xs text-gray-800 font-semibold">43</span>
+                            <span class="text-xs text-gray-800 font-semibold">{{ post.comments.length }}</span>
                         </div>
 
                         <div class="pt-4 text-center">
@@ -138,13 +157,12 @@
 
                 </div>
 
-                <div v-if="post.video == 'http://localhost:8000'" class="relative mr-[20px]">
-                    <div class="absolute bottom-0 right-0 Z-2">
+                <div v-if="post.video == 'http://localhost:8000'" class="relative w-[300px]">
+                    <div class="absolute top-3 right-0 Z-2" :id="`rightSideFeatureBar${post.id}`">
                         <div class="pb-4 text-center">
                             <div>
 
-                                <button @click="isLiked ? unlikePost(post) : likePost(post)"
-                                    class="rounded-full bg-gray-200 p-2 cursor-pointer">
+                                <button @click="isLiked ? unlikePost(post) : likePost(post)" class=" p-2 cursor-pointer">
                                     <Icon name="mdi:lightbulb" size="25" :color="isLiked ? '#f0cc2c' : ''" />
                                 </button>
                             </div>
@@ -153,14 +171,14 @@
 
                         <div id="mainComment" @click="replyToComment(post.id, $event, comment, 'mainComment')"
                             class="pt-4 pb-4 text-center">
-                            <div class="rounded-full bg-gray-200 p-2 cursor-pointer">
+                            <div class=" p-2 cursor-pointer">
                                 <Icon name="bx:bxs-message-rounded-dots" size="25" />
                             </div>
-                            <span class="text-xs text-gray-800 font-semibold">43</span>
+                            <span class="text-xs text-gray-800 font-semibold">{{ post.comments.length }}</span>
                         </div>
 
                         <div class="pt-4 text-center">
-                            <div class="rounded-full bg-gray-200 p-2 cursor-pointer">
+                            <div class=" p-2 cursor-pointer">
                                 <Icon name="ri:share-forward-fill" size="25" />
                             </div>
                             <span class="text-xs text-gray-800 font-semibold">55</span>
@@ -175,8 +193,9 @@
             </div>
         </div>
     </div>
-    <div class="postCommentTextArea sm:w-[50%] lg:w-[80%] w-full " :id="`commentReplyArea_${post.id}`" style="margin: auto;display: none;">
-        <textarea cols="50" rows="4" maxlength="80" class="
+    <div class="postCommentTextArea sm:w-[50%] lg:w-[80%] w-full " :id="`commentReplyArea_${post.id}`"
+        style="margin: auto;display: none;">
+        <textarea cols="50" rows="4" class="
                                         resize-none
                                         
                                         w-full
@@ -188,8 +207,8 @@
                                         px-3
                                         focus:outline-none
                                     "></textarea>
-        <button @click="postComment(post, $event, parent_comment_id, level_id, main_parent_id)"
-            class="  flex items-center bg-[white] text-black  rounded-full  px-3 " >
+        <button @click="postComment(post.id, $event, parent_comment_id, level_id, main_parent_id)"
+            class="  flex items-center bg-[white] text-black  rounded-full  px-3 ">
             <Icon name="ri:share-forward-fill" size="35" />
         </button>
     </div>
@@ -254,7 +273,8 @@ if (post.value.video != 'http://localhost:8000') {
 // }
 onMounted(() => {
     let mainDiv = document.getElementById("thoughtContainer" + post.value.id);
-    let commentBlock = document.createElement('div');
+
+   /* let commentBlock = document.createElement('div');
     mainDiv.appendChild(commentBlock);
 
     for (let i = 0; i < post.value.comments.length; i++) {
@@ -281,7 +301,8 @@ onMounted(() => {
             userName.innerHTML = post.value.comments[i].user.name
             commentDiv.appendChild(level1comment);
             commentDiv.appendChild(replyButton);
-
+            level1comment.style.border = "1px solid lightgray"
+            replyButton.style.display = "flex";
             commentDiv.setAttribute("id", post.value.id + "_" + post.value.comments[i].id)
             commentDiv.style.display = "";
             replyButton.addEventListener('click', () => replyToComment(post.value.id, "", post.value.comments[i], "replyComment", replyButton.getAttribute('id'), post.value.comments[i].id))
@@ -289,6 +310,46 @@ onMounted(() => {
             replyButton.style.marginLeft = "10px";
             replyButton.style.fontSize = "12px";
             level1comment.innerHTML = post.value.comments[i].text;
+            level1comment.style.color = "gray";
+            level1comment.style.padding = "4px";
+            level1comment.style.borderRadius = "10px";
+            level1comment.style.width = "fit-content";
+            level1comment.style.maxWidth = "300px"
+            document.getElementById("commentText" + post.value.id).style.marginTop = "200px";
+            document.getElementById("thoughtContainer" + post.value.id).style.transitionTimingFunction = "ease";
+            document.getElementById("commentText" + post.value.id).addEventListener('click', () => {
+
+                if (document.getElementById("openThread" + post.value.id).style.display == "block") {
+                    document.getElementById("closeThread" + post.value.id).style.display = "block";
+                    document.getElementById("openThread" + post.value.id).style.display = "none";
+                } else {
+                    document.getElementById("closeThread" + post.value.id).style.display = "none";
+                    document.getElementById("openThread" + post.value.id).style.display = "block";
+
+                }
+                if (document.getElementById("commentText" + post.value.id).style.marginTop == "200px") {
+                    document.getElementById("thoughtContainer" + post.value.id).style.maxHeight = "650px";
+                    document.getElementById("commentText" + post.value.id).style.marginTop = "0px";
+                } else {
+                    document.getElementById("thoughtContainer" + post.value.id).style.maxHeight = "0px"
+                    document.getElementById("commentText" + post.value.id).style.marginTop = "200px";
+
+
+
+
+                }
+                console.log("click", document.getElementById("thoughtContainer" + post.value.id).style.maxHeight, "some height");
+            })
+
+            userName.style.fontWeight = "500";
+            var rImg = document.createElement("img");
+            rImg.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/ionicons/1.2.3/src/icon-reply.svg');
+            rImg.setAttribute('alt', 'na');
+            rImg.setAttribute('height', '20px');
+            rImg.setAttribute('width', '20px');
+            rImg.style.borderRadius = "10px";
+            rImg.style.marginRight = "5px";
+            replyButton.appendChild(rImg);
         }
 
         for (let j = 0; j < post.value.comments.length; j++) {
@@ -298,10 +359,16 @@ onMounted(() => {
                 let username = document.createElement('p');
                 parentCommentDiv.setAttribute("id", "reply_" + post.value.comments[j].id)
                 parentCommentDiv.appendChild(commentDiv);
-                parentCommentDiv.style.borderLeft = "1px solid gray";
+                parentCommentDiv.style.borderLeft = "1px solid #e5e7eb";
                 let reply = document.createElement('p');
                 reply.innerHTML = post.value.comments[j].text;
                 reply.style.color = "gray";
+                reply.style.border = "1px solid lightgray"
+                reply.style.padding = "4px"
+                reply.style.borderRadius = "10px"
+                reply.style.width = "fit-content"
+                reply.style.maxWidth = "1000px"
+
                 let replyButton = document.createElement('button');
                 replyButton.setAttribute("id", 2)
                 replyButton.addEventListener('click', () => replyToComment(post.value.id, "", post.value.comments[j], "replyComment", replyButton.getAttribute('id'), post.value.comments[i].id))
@@ -325,9 +392,18 @@ onMounted(() => {
                 commentDiv.style.marginTop = "10px";
                 commentDiv.style.marginBottom = "10px";
                 username.innerHTML = post.value.comments[j].user.name
+                username.style.fontWeight = "500";
                 replyButton.style.marginLeft = "20px"
                 replyButton.style.fontSize = "12px"
-
+                var rImg = document.createElement("img");
+                rImg.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/ionicons/1.2.3/src/icon-reply.svg');
+                rImg.setAttribute('alt', 'na');
+                rImg.setAttribute('height', '20px');
+                rImg.setAttribute('width', '20px');
+                rImg.style.borderRadius = "10px";
+                rImg.style.marginRight = "5px";
+                replyButton.appendChild(rImg);
+                replyButton.style.display = "flex";
                 let replyIcon = document.createElement('Icon');
                 replyButton.appendChild(replyIcon)
                 console.log(replyIcon);
@@ -445,8 +521,8 @@ onMounted(() => {
                 }
 
             }
-        }
-    }
+        }*/
+    // }
 })
 const deleteComment = async (post, commentId) => {
     let res = confirm('Are you sure you want to delete this comment?')
@@ -501,20 +577,19 @@ const unlikePost = async (post) => {
     }
 }
 
-const follow = async (user) => {
+const follow = async (userToFollowID) => {
     if (!$userStore.id) {
         $generalStore.isLoginOpen = true
         return
     }
     try {
-        await $userStore.follow()
+        await $userStore.follow(userToFollowID)
     } catch (error) {
         console.log(error)
     }
 }
 
 const replyToComment = (post, eventClick, comment, replyMode, level = null, mainParentId = null) => {
-    console.log(post);
     if (replyMode == 'mainComment') {
         console.log("event click inside main comment", comment);
     } else {
@@ -575,7 +650,7 @@ const postComment = async (id, elementButton, parent_id, level_id, mainParentId)
     try {
 
         await $userStore.addComment(id, replyValue, parent_id, level_id, mainParentId)
-        document.getElementById("commentReplyArea_" + id.id).style.display = "none";
+        document.getElementById("commentReplyArea_" + id).style.display = "none";
     } catch (error) {
         console.log(error)
     }
@@ -586,8 +661,8 @@ const postComment = async (id, elementButton, parent_id, level_id, mainParentId)
 
 <style>
 .debate {
-    max-height: 550px;
     overflow: scroll;
+    width: 1200px;
 }
 
 .debate::-webkit-scrollbar {
@@ -597,8 +672,8 @@ const postComment = async (id, elementButton, parent_id, level_id, mainParentId)
 
 .commentSection {
 
-    max-height: 500px;
-    overflow: scroll;
+    overflow: hidden;
+    background: white;
     -ms-overflow-style: none;
     /* IE and Edge */
     scrollbar-width: none;
