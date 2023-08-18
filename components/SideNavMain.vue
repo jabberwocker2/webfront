@@ -43,14 +43,14 @@
 
                 <div class="lg:hidden block pt-3" />
 
-                <!-- <div 
+                <div 
                     v-if="$generalStore.following" 
                     v-for="fol in $generalStore.following"
                 >
                     <div @click="isLoggedIn(fol)" class="cursor-pointer">
                         <MenuItemFollow :user="fol" />
                     </div>
-                </div> -->
+                </div>
 
                 <button class="lg:block hidden text-[black] pt-1.5 pl-2 text-[13px]">See more</button>
 

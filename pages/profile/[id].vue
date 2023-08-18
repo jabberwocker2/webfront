@@ -23,12 +23,10 @@
             </div>
 
             <div class="flex items-center pt-4">
+               
                 <div class="mr-4">
-                    <span class="font-bold">10K</span>
-                    <span class="text-gray-500 font-light text-[15px] pl-1.5">Following</span>
-                </div>
-                <div class="mr-4">
-                    <span class="font-bold">44K</span>
+                    {{ console.log("no of follwers",$profileStore) }}
+                    <span class="font-bold">{{ $profileStore.noOfFollwers  }}</span>
                     <span class="text-gray-500 font-light text-[15px] pl-1.5">Followers</span>
                 </div>
                 <div class="mr-4">

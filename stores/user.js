@@ -75,7 +75,7 @@ export const useUserStore = defineStore('user', {
         main_parent_id = 0;
       }
       let res = await $axios.post('/api/comments', {
-        post_id: post.id,
+        post_id: post,
         comment: comment,
         comment_id: parent_id,
         level: level_id,
@@ -149,10 +149,10 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async follow() {
-      console.log(this.id)
+    async follow(userFollowID) {
+      console.log(userFollowID)
       let res = await $axios.post('/api/follow', {
-        user_id: this.id,
+        user_id: userFollowID,
       })
 
       console.log(res)

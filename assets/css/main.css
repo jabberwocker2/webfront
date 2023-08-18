@@ -5,6 +5,11 @@
 body {
     overflow: hidden;
 }
+i{
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+}
 
 @media screen and (max-width: 500px) {
     #SideNavMain {
@@ -29,7 +34,7 @@ body {
     }
 
     .postCommentTextArea {
-        max-width: 463px !important;
+        max-width: 403px !important;
         float: left;
     }
     .item {
