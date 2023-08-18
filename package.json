@@ -21,6 +21,7 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
     "axios": "^1.4.0",
+    "bootstrap-icons": "^1.10.5",
     "pinia": "^2.1.4",
     "vue-advanced-cropper": "^2.8.8",
     "vue-scroll-snap": "^0.1.11"
