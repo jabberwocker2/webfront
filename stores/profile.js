@@ -38,6 +38,8 @@ export const useProfileStore = defineStore('profile', {
              }
         }
     },
+      
+
 
     resetUser() {      
         this.$state.id = ''

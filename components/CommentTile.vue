@@ -2,8 +2,11 @@
     <div :id="`commentTile-${comment.id}`" class="overflow-y-visible">
         <div class="relative w-[600px] block" >
             <p class="font-medium">{{comment.user.name}}</p>
-            <p class="border-[2px] p-1 max-w-fit rounded-2xl">{{ comment.text }}</p>
-            <Icon @click="openReplyTextArea()" name="ri:share-forward-fill" size="20" />
+            <div class="commentTileSelect border-[1px] border-gray-300 p-1 w-fit max-w-[50ch]     rounded-2xl" :id="`commentTileSelect-${comment.id}`">
+                <p>{{ comment.text }}</p>
+                <Icon @click="commonFunctions.toggleTextArea(posts.id,comment.id)" name="ri:share-forward-fill" size="20"  />
+
+            </div>
             <textarea  :id="`openReplyTextArea-${comment.id}`"  cols="30" rows="4" v-model="userBio" maxlength="80" class="
                 resize-none
                 w-full
@@ -17,7 +20,6 @@
                 focus:outline-none
             " style="display: none"></textarea>
                 <div v-for="replies in posts.comments" class="ml-3 border-l-[1px]">
-                    {{console.log(comment,"replies")}}
                     <ReplyTile v-if="(replies.main_parent_id === comment.id) && (replies.level_id === 1)" :replies="replies" :posts=posts  />
 
             </div>
@@ -32,24 +34,16 @@
 <script setup>
 
 import commonFunctions from "~/components/commonFunction";
+import commonFunction from "~/components/commonFunction";
 
 const props = defineProps(['comment','posts', 'user'])
 const { comment, user ,posts} = toRefs(props)
 const { $userStore } = useNuxtApp()
 
-function openReplyTextArea() {
-    console.log("textarea",comment)
-    if(document.getElementById("openReplyTextArea-"+comment.value.id).style.display === "none") {
-        document.getElementById("postCommentButton-"+comment.value.id).style.display = "block";
-        document.getElementById("openReplyTextArea-"+comment.value.id).style.display = "block";
-    } else {
-        document.getElementById("openReplyTextArea-"+comment.value.id).style.display = "none";
-        document.getElementById("postCommentButton-"+comment.value.id).style.display = "none";
-    }
-}
+
 
 onMounted( () => {
-    var replyValue = document.getElementById('openReplyTextArea-'+comment.value.id);
+    var replyValue = document.getElementById('textArea-'+posts.value.id);
     document.getElementById('postCommentButton-'+comment.value.id).addEventListener('click',function() { console.log('replies value',replyValue); commonFunctions.postComment(posts.value.id,comment.value.id,comment.value.level_id+1,comment.value.id,$userStore,document.getElementById('openReplyTextArea-'+comment.value.id).value,'openReplyTextArea-'+comment.value.id,'postCommentButton-'+comment.value.id)})
 })
 

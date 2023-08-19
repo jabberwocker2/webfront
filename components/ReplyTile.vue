@@ -2,23 +2,23 @@
     <p class="font-medium ">{{ replies.user.name }}</p>
 
     <div class="flex  " >
-        <div :class="`ml-[${replies.id}0px] `" class="flex border-[2px] max-w-fit rounded-2xl p-1">
+        <div  class="flex border-[1px] border-gray-300 w-fit max-w-[400px] rounded-2xl p-1">
             {{replies.text}}
-            <Icon  v-if="replies.noOfChildren >= 1" :id="`collapsePlus${replies.id}`" @click="collapseCommentTile($event)" name="mdi:plus" color="gray" size="17" class="ml-[20px] rounded-2xl border-gray-500 border-[1px] mt-1 transition-all duration-250 " style="display: none" />
+            <Icon  v-if="replies.noOfChildren >= 1" :id="`collapsePlus${replies.id}`" @click="collapseCommentTile($event)" name="mdi:plus" color="gray" size="17" class="ml-[20px] min-w-[17px] rounded-2xl border-gray-500 border-[1px] mt-1 transition-all duration-250 " style="display: none" />
 
-            <Icon  v-if="replies.noOfChildren >= 1" :id="`collapseMinus${replies.id}`" @click="collapseCommentTile($event)" name="mdi:minus" color="gray" size="17" class="ml-[20px] rounded-2xl border-gray-500 border-[1px] mt-1 transition-all duration-250"  style="display: block" />
+            <Icon  v-if="replies.noOfChildren >= 1" :id="`collapseMinus${replies.id}`" @click="collapseCommentTile($event)" name="mdi:minus" color="gray" size="17" class="ml-[20px] min-w-[17px] rounded-2xl border-gray-500 border-[1px] mt-1 transition-all duration-250"  style="display: block" />
 
         </div>
+
     </div>
 
 
 
 
     <Icon @click="commonFunctions.openTextArea('openReplyTextArea-'+replies.id,'postCommentButton-'+replies.id)" name="ri:share-forward-fill" size="20"  :class="`ml-[10px]`" />
-    <textarea  :id="`openReplyTextArea-${replies.id}`"  cols="30" rows="4" v-model="userBio" maxlength="80" class="
+    <textarea  :id="`openReplyTextArea-${replies.id}`"  cols="30" rows="4" v-model="userBio"  class="
                 resize-none
                 w-full
-                bg-[#F1F1F2]
                 text-gray-800
                 border
                 border-gray-300
