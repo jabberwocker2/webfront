@@ -5,10 +5,17 @@
             <div class="flex w-[calc(100vw-230px)]">
                 <img class="max-w-[120px] rounded-full" :src="$profileStore.image">
                 <div class="ml-5 w-full">
-                    <div class="text-[30px] font-bold truncate">
-                        {{ $generalStore.allLowerCaseNoCaps($profileStore.name) }}
+                    <div class="flex text-[30px] font-bold truncate">
+                      {{ $generalStore.allLowerCaseNoCaps($profileStore.name) }}
+                      {{console.log('reached profile store', $profileStore.hatColor)}}
+                      <Icon class="ml-[40px] self-center  " :class="`text-${$profileStore.hatColor}-600`" name="mdi:school"  size="50" :id="allLikes"   />
+
                     </div>
-                    <div class="text-[18px] truncate">{{ $profileStore.name }}</div>
+                    <div>
+                      <div class="text-[18px] truncate">{{ $profileStore.name }}</div>
+
+
+                    </div>
                     <button v-if="$profileStore.id === $userStore.id" @click="$generalStore.isEditProfileOpen = true"
                         class="flex item-center rounded-md py-1.5 px-3.5 mt-3 text-[15px] font-semibold border hover:bg-gray-100">
                         <Icon class="mt-0.5 mr-1" name="mdi:pencil" size="18" />
@@ -23,13 +30,15 @@
             </div>
 
             <div class="flex items-center pt-4">
-               
+
                 <div class="mr-4">
+
                     {{ console.log("no of follwers",$profileStore) }}
                     <span class="font-bold">{{ $profileStore.noOfFollwers  }}</span>
                     <span class="text-gray-500 font-light text-[15px] pl-1.5">Followers</span>
                 </div>
-                <div class="mr-4">
+                <div class="flex mr-4" >
+
                     <span class="font-bold">{{ allLikes }}</span>
                     <span class="text-gray-500 font-light text-[15px] pl-1.5">Sparks</span>
                 </div>
@@ -81,4 +90,5 @@ watch(() => posts.value, () => {
     setTimeout(() => show.value = true, 300)
 
 })
+
 </script>

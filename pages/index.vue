@@ -49,6 +49,7 @@ onMounted(async () => {
     width: 100%;
     height: 100%;
     background: white;
+    border : none;
 }
 
 .scroll-snap-container {
@@ -59,12 +60,14 @@ onMounted(async () => {
     scrollbar-width: none;
     min-width: 460px;
     display: grid;
+    border : none;
     /* Firefox */
 
 }
 
 .scroll-snap-container::-webkit-scrollbar {
     display: none;
+    border : none;
     /* Safari and Chrome */
 }
 
