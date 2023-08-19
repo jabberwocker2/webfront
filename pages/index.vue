@@ -5,7 +5,7 @@
 
 <template>
     <MainLayout>
-        <vue-scroll-snap class="grid justify-self-center">
+        <vue-scroll-snap class="grid justify-self-center" id="scroll">
 
             <div v-for="post in $generalStore.posts" :key="post"
                 class=" pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
@@ -13,7 +13,7 @@
                     <PostMain v-if="post" :post="post" />
 
                 </div>
-                <div v-else class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
+                <div v-else class="item w-[700px] border-t-2 border-l-2 ml-[10px] transition-[max-width] duration-200 ease-in-out" :id="`item${post.id}`" >
                     <PostMain v-if="post" :post="post" class="mt-3 grid" />
                 </div>
             </div>
@@ -42,6 +42,8 @@ onMounted(async () => {
     /* Set the minimum height of the items to be the same as the height of the scroll-snap-container.*/
 
     min-height: 900px;
+    border: 0;
+    max-width: 500px;
     /* border-color: seashell; */
 }
 
@@ -53,7 +55,7 @@ onMounted(async () => {
 
 .scroll-snap-container {
     height: 900px;
-    width: 60%;
+    width: 1200px;
     -ms-overflow-style: none;
     /* IE and Edge */
     scrollbar-width: none;
