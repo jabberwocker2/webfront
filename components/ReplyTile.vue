@@ -15,7 +15,7 @@
 
 
 
-    <Icon @click="commonFunctions.openTextArea('openReplyTextArea-'+replies.id,'postCommentButton-'+replies.id)" name="ri:share-forward-fill" size="20"  :class="`ml-[10px]`" />
+    <Icon @click="commonFunctions.toggleTextArea(posts.id,replies.id,primaryObject)" name="ri:share-forward-fill" size="20"  :class="`ml-[10px]`" />
     <textarea  :id="`openReplyTextArea-${replies.id}`"  cols="30" rows="4" v-model="userBio"  class="
                 resize-none
                 w-full
@@ -50,6 +50,16 @@ const props = defineProps(['replies','posts'])
 var collapse = false;
 const { replies,posts } = toRefs(props)
 const { $userStore, $generalStore } = useNuxtApp()
+
+const primaryObject = {
+    post_id:posts.value.id,
+    comment_id:replies.value.id,
+    level_id:replies.value.level_id+1,
+    comment_value_id:replies.value.main_parent_id,
+    userStore:$userStore,
+    textArea:'textArea'+posts.value.id,
+    button:'postCommentButton'+posts.value.id
+}
 onMounted( () => {
     var replyValue = document.getElementById('openReplyTextArea-'+replies.value.id);
     document.getElementById('postCommentButton-'+replies.value.id).addEventListener('click',function() { console.log('replies value',replyValue); commonFunctions.postComment(posts.value.id,replies.value.id,replies.value.level_id+1,replies.value.main_parent_id,$userStore,document.getElementById('openReplyTextArea-'+replies.value.id).value,'openReplyTextArea-'+replies.value.id,'postCommentButton-'+replies.value.id)})

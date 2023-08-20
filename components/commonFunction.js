@@ -25,18 +25,14 @@ commonFunctions.postComment = async (id, parent_id, level_id, mainParentId, user
 }
 
 commonFunctions.changeHeight  = async (id) => {
-    console.log("id","commentReplyArea_"+id)
     document.getElementById("commentReplyArea_"+id).style.height = "auto";
+    console.log(document.getElementById("textArea"+id).value);
     document.getElementById("commentReplyArea_"+id).style.height = (document.getElementById("textArea"+id).scrollHeight+2)+"px";
-    console.log("new height",document.getElementById("textArea"+id).scrollHeight,document.getElementById("commentReplyArea_"+id).style.height);
-    console.log(document.getElementById("discussButton"+id)  );
     if(document.getElementById("discussButton"+id).children[0].innerHTML === "Post") {
-        console.log("reached if");
         commonFunctions.showCharacterCount(id);
         commonFunctions.changeBorderColor(id);
     }
     if(document.getElementById("discussButton"+id).children[0].innerHTML === "Close") {
-        console.log("reached if");
         commonFunctions.showAllCommentsCount(id);
     }
 }
@@ -81,6 +77,18 @@ commonFunctions.closeTextAreaWithButton = (id) => {
     document.getElementById("numberTab"+id).innerHTML = "";
     document.getElementById("discussButton"+id).children[0].style.marginLeft = "35%";
     document.getElementById("discussButton"+id).children[0].innerHTML = "Close";
+    document.getElementById("discussButton"+id).addEventListener('mouseenter', function(e) {
+        console.log("mouse enter");
+        if(document.getElementById("discussButton"+id).children[0].innerHTML === "Close") {
+            document.getElementById("discussButton"+id).children[0].style.color = "white";
+            document.getElementById("discussButton"+id).style.background = "red";
+        }
+    });
+    document.getElementById("discussButton"+id).addEventListener('mouseleave', function(e) {
+        console.log("mouse enter");
+            document.getElementById("discussButton"+id).children[0].style.color = "Black";
+            document.getElementById("discussButton"+id).style.background = "white";
+    });
     document.getElementById("postCommentButton"+id).style.display = "none";
     document.getElementById("discussButton"+id).children[0].style.justifySelf = "center";
     document.getElementById("thoughtContainer"+id).style.bottom = "100px";
@@ -90,6 +98,7 @@ commonFunctions.closeTextAreaWithButton = (id) => {
 commonFunctions.closeTextArea  =  (id) => {
     if((document.getElementById("thoughtContainer"+id).scrollTop === 0)) {
         commonFunctions.openTextAreaWithButton(id);
+
     } else {
         for(let i=0;i<document.getElementsByClassName("commentTileSelect").length;i++) {
             document.getElementsByClassName("commentTileSelect")[i].style.borderColor = "lightgray";
@@ -98,16 +107,23 @@ commonFunctions.closeTextArea  =  (id) => {
     }
 }
 
-commonFunctions.toggleTextArea = (id,commentId) => {
+commonFunctions.toggleTextArea = (id,commentId,primaryObject) => {
+    console.log("primary Object",primaryObject);
+
     if(document.getElementById("discussButton"+id).children[0].innerHTML === "Close") {
         commonFunctions.openTextAreaWithButton(id);
-        document.getElementById("postCommentButton"+id).addEventListener('click',function () {
-
-        })
-        document.getElementById("commentTileSelect-"+commentId).style.borderColor = "black";
-        document.getElementById("commentTileSelect-"+commentId).style.border = "2px solid";
+        document.getElementById("postCommentButton"+id).style.display = "none";
+        document.getElementById("replyCommentButton"+id).style.display = "Block";
+        let replyValue = document.getElementById("textArea"+id);
+        console.log(replyValue,"replyValueInCommon");
+        document.getElementById("replyCommentButton"+id).addEventListener('click',function () {commonFunctions.postComment(primaryObject.post_id,primaryObject.comment_id,primaryObject.level_id,primaryObject.comment_value_id,primaryObject.userStore,(document.getElementById("textArea"+id).value),primaryObject.textArea,primaryObject.button)})
+        // document.getElementById("commentTileSelect-"+commentId).style.borderColor = "black";
+        // document.getElementById("commentTileSelect-"+commentId).style.border = "2px solid";
     } else {
+        document.getElementById("replyCommentButton"+id).style.display = "none";
+        document.getElementById("postCommentButton"+id).style.display = "Block";
         for(let i=0;i<document.getElementsByClassName("commentTileSelect").length;i++) {
+
             document.getElementsByClassName("commentTileSelect")[i].style.borderColor = "lightgray";
         }
         commonFunctions.closeTextAreaWithButton(id);

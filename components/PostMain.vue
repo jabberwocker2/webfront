@@ -25,18 +25,6 @@
             <div v-if="post.video == 'http://localhost:8000'"
                  class="flex commentText text-[20px] pb-0.5 break-words md:max-w-[500px] max-w-[500px] duration-500 ease-in-out cursor-pointer z-2"
                  :id="`commentText${post.id}`">{{ post.text }}<div class="flex relative float-right">
-                <!--                    <div class="w-[50px] h-[2px] bg-slate-200 ml-[10px] mr-[10px] self-center"></div>-->
-                <!--                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"-->
-                <!--                        :id="`openThread${post.id}`" style="display: block;border: 1px solid lightgray; border-radius: 20px;" class="bi bi-plus self-center text-[gray] "-->
-                <!--                        viewBox="0 0 16 16" @click="toggleThoughtContainer(post.id,'open')">-->
-                <!--                        <path-->
-                <!--                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />-->
-                <!--                    </svg>-->
-                <!--                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"-->
-                <!--                        class=" bi bi-dash self-center text-[gray]" style="display: none;border: 1px solid lightgray; border-radius: 20px;" :id="`closeThread${post.id}`"-->
-                <!--                        viewBox="0 0 16 16"  @click="toggleThoughtContainer(post.id,'close')">-->
-                <!--                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />-->
-                <!--                    </svg>-->
             </div>
             </div>
 
@@ -54,25 +42,14 @@
                         </div>
                         <span class="text-xs text-gray-800 font-semibold self-center">{{ post.likes.length }}</span>
                     </div>
-
-                    <!--                    <div id="mainComment" @click="replyToComment(post.id, $event, comment, 'mainComment')"-->
-                    <!--                         class="flex  text-center">-->
-                    <!--                        <div class=" p-2 cursor-pointer">-->
-                    <!--                            <Icon name="bx:bxs-message-rounded-dots" size="25" />-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-
-                    <!--                    <div class="flex text-center">-->
-                    <!--                        <div class=" p-2 cursor-pointer">-->
-                    <!--                            <Icon name="ri:share-forward-fill" size="25" />-->
-                    <!--                        </div>-->
-                    <!--                        <span class="text-xs text-gray-800 font-semibold self-center">55</span>-->
-                    <!--                    </div>-->
                     <button @click="replyToComment(post.id, $event, comment, 'mainComment')"  :id="`discussButton${post.id}`"
                             class="  flex items-center bg-[white] text-black  rounded-2xl  px-3 w-[220px] transition-[width] duration-100 ease-in-out border-[2px] border-gray-300 justify-between z-5">
                         <p>Discuss</p>
                         <span class="text-xs text-gray-800 self-center" :id="`numberTab${post.id}`">{{ post.comments.length }}</span>
-                        <button class="z-10"  @click="postComment(post.id, $event, parent_comment_id, level_id, main_parent_id) " :id="`postCommentButton${post.id}`">
+                        <button class="z-10"  @click="postComment(post.id, $event, parent_comment_id, level_id, main_parent_id) " :id="`postCommentButton${post.id}`" style="display: none">
+                            <Icon name="mdi:send-variant-outline" class=" right-0 float-right z-10 color-gray-300" size="25" />
+                        </button>
+                        <button class="z-10"  :id="`replyCommentButton${post.id}`" style="display: none">
                             <Icon name="mdi:send-variant-outline" class=" right-0 float-right z-10 color-gray-300" size="25" />
                         </button>
                     </button>
@@ -294,9 +271,8 @@ const toggleThoughtContainer = (id,type) => {
         document.getElementById("postDetailContainer"+id).style.marginTop = "50%";
         document.getElementById("thoughtContainer"+id).style.bottom = "600px";
         document.getElementById("discussButton"+id).children[0].innerHTML = "Discuss";
-
-
-
+        document.getElementById("discussButton"+id).children[0].style.color = "Black";
+        document.getElementById("postCommentButton"+id).style.display = "none";
     } else {
         console.log(document.getElementById("discussButton"+id).children[0].innerHTML);
         document.getElementById("discussButton"+id).children[0].innerHTML = "Post";
@@ -306,7 +282,7 @@ const toggleThoughtContainer = (id,type) => {
         document.getElementById("postDetailContainer"+id).style.marginTop = "5%";
         document.getElementById("thoughtContainer"+id).style.bottom = "0px";
         document.getElementById("thoughtContainer"+id).scrollTop = 0;
-
+        document.getElementById("postCommentButton"+id).style.display = "Block";
     }
     console.log("open thought container")
 }
