@@ -4,7 +4,7 @@
             <p class="font-medium">{{comment.user.name}}</p>
             <div class="commentTileSelect border-[1px] border-gray-300 p-1 w-fit max-w-[50ch]     rounded-2xl" :id="`commentTileSelect-${comment.id}`">
                 <p>{{ comment.text }}</p>
-                <Icon @click="commonFunctions.toggleTextArea(posts.id,comment.id)" name="ri:share-forward-fill" size="20"  />
+                <Icon @click="commonFunctions.toggleTextArea(posts.id,comment.id,primaryObject)" name="ri:share-forward-fill" size="20"  />
 
             </div>
             <textarea  :id="`openReplyTextArea-${comment.id}`"  cols="30" rows="4" v-model="userBio" maxlength="80" class="
@@ -39,11 +39,20 @@ import commonFunction from "~/components/commonFunction";
 const props = defineProps(['comment','posts', 'user'])
 const { comment, user ,posts} = toRefs(props)
 const { $userStore } = useNuxtApp()
-
-
+const primaryObject = {
+    post_id:posts.value.id,
+    comment_id:comment.value.id,
+    level_id:comment.value.level_id+1,
+    comment_value_id:comment.value.id,
+    userStore:$userStore,
+    textArea:'textArea'+posts.value.id,
+    button:'postCommentButton'+posts.value.id
+}
 
 onMounted( () => {
-    var replyValue = document.getElementById('textArea-'+posts.value.id);
+    var replyValue = document.getElementById('textArea'+posts.value.id);
+
+    console.log(primaryObject,"primaryObject");
     document.getElementById('postCommentButton-'+comment.value.id).addEventListener('click',function() { console.log('replies value',replyValue); commonFunctions.postComment(posts.value.id,comment.value.id,comment.value.level_id+1,comment.value.id,$userStore,document.getElementById('openReplyTextArea-'+comment.value.id).value,'openReplyTextArea-'+comment.value.id,'postCommentButton-'+comment.value.id)})
 })
 
