@@ -1,23 +1,12 @@
-
-
-
-
-
 <template>
     <MainLayout>
         <vue-scroll-snap class="grid justify-self-center" id="scroll">
-
             <div v-for="post in $generalStore.posts" :key="post"
                 class=" pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
-                <div v-if="post.video == 'http://localhost:8000'" class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
+                <div class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
                     <PostMain v-if="post" :post="post" />
-
-                </div>
-                <div v-else class="item w-[700px] border-t-2 border-l-2 ml-[10px] transition-[max-width] duration-200 ease-in-out" :id="`item${post.id}`" >
-                    <PostMain v-if="post" :post="post" class="mt-3 grid" />
                 </div>
             </div>
-
         </vue-scroll-snap>
     </MainLayout>
 </template>
@@ -56,7 +45,7 @@ onMounted(async () => {
 
 .scroll-snap-container {
     height: 900px;
-    width: 1200px;
+    width: 520px;
     -ms-overflow-style: none;
     /* IE and Edge */
     scrollbar-width: none;

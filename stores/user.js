@@ -112,6 +112,7 @@ export const useUserStore = defineStore('user', {
     async likePost(post, isPostPage) {
       let res = await $axios.post('/api/likes', {
         post_id: post.id,
+        type: "post"
       })
 
       console.log(res)

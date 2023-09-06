@@ -4,9 +4,10 @@
     <div class="flex  " >
         <div  class="flex border-[1px] border-gray-300 w-fit max-w-[400px] rounded-2xl p-1">
             {{replies.text}}
-            <Icon  v-if="replies.noOfChildren >= 1" :id="`collapsePlus${replies.id}`" @click="collapseCommentTile($event)" name="mdi:plus" color="gray" size="17" class="ml-[20px] min-w-[17px] rounded-2xl border-gray-500 border-[1px] mt-1 transition-all duration-250 " style="display: none" />
 
-            <Icon  v-if="replies.noOfChildren >= 1" :id="`collapseMinus${replies.id}`" @click="collapseCommentTile($event)" name="mdi:minus" color="gray" size="17" class="ml-[20px] min-w-[17px] rounded-2xl border-gray-500 border-[1px] mt-1 transition-all duration-250"  style="display: block" />
+            <Icon  v-if="replies.noOfChildren >= 1" :id="`collapsePlus${replies.id}`" @click="collapseCommentTile($event)" name="mdi:plus" color="gray" size="17" class="ml-[20px] min-w-[17px] rounded-2xl border-gray-500 border-[1px] mt-1 transition-all duration-250 " style="opacity: 0" />
+
+            <Icon  v-if="replies.noOfChildren >= 1" :id="`collapseMinus${replies.id}`" @click="collapseCommentTile($event)" name="mdi:minus" color="gray" size="17" class="ml-[20px] min-w-[17px] rounded-2xl border-gray-500 border-[1px] mt-1 transition-all duration-250"  style="opacity: 1" />
 
         </div>
 
@@ -34,7 +35,7 @@
     </button>
     <div v-if="replies.level_id <= (replies.max_level * 30)">
         <div v-for="repliesTo in posts.comments" class="ml-[20px] mt-2 border-l-[1px]" >
-            
+
             <ReplyTile v-if="(repliesTo.parent_id === replies.id) && (repliesTo.level_id === (replies.level_id +1))" :replies="repliesTo" :posts=posts  />
 
         </div>
@@ -69,21 +70,22 @@ function collapseCommentTile(event) {
     console.log(event.srcElement.parentElement);
     if(event.srcElement.parentElement.parentElement.parentElement.style.maxHeight != "60px") {
         collapse = true;
-        event.srcElement.parentElement.parentElement.parentElement.style.transition = "2s";
+        event.srcElement.parentElement.parentElement.parentElement.style.transition = "2s ease";
         event.srcElement.parentElement.parentElement.parentElement.style.maxHeight = "60px";
         event.srcElement.parentElement.parentElement.parentElement.style.overflowY = "hidden";
-        document.getElementById("collapsePlus"+replies.value.id).style.display = "block";
-        document.getElementById("collapseMinus"+replies.value.id).style.display = "none";
+
+
+        document.getElementById("collapsePlus"+replies.value.id).style.opacity = "1";
+        document.getElementById("collapseMinus"+replies.value.id).style.opacity = "0";
 
     } else {
 
         collapse = false;
         event.srcElement.parentElement.parentElement.parentElement.style.maxHeight = "fit-content";
         event.srcElement.parentElement.parentElement.parentElement.style.overflowY = "auto";
-        document.getElementById("collapsePlus"+replies.value.id).style.display = "none";
-        document.getElementById("collapseMinus"+replies.value.id).style.display = "block";
 
-
+        document.getElementById("collapsePlus"+replies.value.id).style.opacity = "0";
+        document.getElementById("collapseMinus"+replies.value.id).style.opacity = "1";
 
     }
 }
