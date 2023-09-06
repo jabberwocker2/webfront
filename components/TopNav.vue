@@ -2,13 +2,13 @@
     <div id="TopNav" class="relative bg-white dark:bg-black z-30 flex items-center w-full border-b h-[61px]">
         <div :class="route.fullPath === '/' ? 'max-w-[1150px]' : ''"
             class="flex items-center justify-between w-full px-6 mx-auto">
-            <div :class="route.fullPath === '/' ? 'w-[80%]' : 'lg:w-[20%] w-[70%]'">
+            <div :class="route.fullPath === '/' ? 'w-[70%]' : 'lg:w-[20%] w-[70%]'">
                 <NuxtLink to="/">
                     <h1>UnDumb</h1>
                 </NuxtLink>
             </div>
 
-            <div class="hidden md:flex items-center bg-[#F1F1F2] p-1 rounded-full max-w-[380px] w-full ">
+            <div class="hidden md:flex items-center bg-[#F1F1F2] p-1 rounded-full max-w-[480px] w-full ">
                 <input type="text"
                     class="w-full pl-3 my-2 bg-transparent placeholder-[#838383] text-[15px] focus:outline-none"
                     placeholder="Search accounts">
@@ -19,8 +19,8 @@
 
             <div class="flex items-center justify-end gap-3 min-w-[275px] max-w-[320px] w-full">
                 <button @click="isLoggedIn()"
-                    class="flex items-center border rounded-sm px-3 py-[6px] bg-amber-600 hover:bg-amber-400	 text-[white] ">
-                    <Icon name="mdi:plus" color="white" size="22" />
+                    class="flex items-center border rounded-sm px-3 py-[6px] 	  ">
+                    <Icon name="mdi:plus" size="22" />
                     <span class="px-2 font-medium text-[15px]">Upload</span>
                 </button>
 
@@ -32,9 +32,7 @@
                     <Icon name="mdi:dots-vertical" color="#161724" size="25" />
                 </div>
                 <div v-else class="flex items-center">
-                    <Icon class="ml-1 mr-4" name="carbon:send-alt" color="#161724" size="30" />
-                    <Icon class="mr-5" name="bx:message-detail" color="#161724" size="27" />
-                    <div class="relative">
+                   <div class="relative">
                         <button class="mt-1" @click="showMenu = !showMenu">
                             <img class="rounded-full" width="33" :src="$userStore.image">
                         </button>

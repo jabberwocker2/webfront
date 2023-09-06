@@ -7,7 +7,6 @@
         class=" grid  mx-auto  lg:px-2.5 px-0"
     >
         <div>
-            <SideNavMain />
         </div>
         <slot />
     </div>
