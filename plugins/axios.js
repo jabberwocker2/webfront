@@ -1,9 +1,9 @@
 import axios from "axios"
-
+import constants from '../constants'
 export default defineNuxtPlugin((NuxtApp) => {
 
     axios.defaults.withCredentials = true;
-    axios.defaults.baseURL = 'http://localhost:8000'
+    axios.defaults.baseURL = constants.base_url;
 
     return {
         provide: { 
