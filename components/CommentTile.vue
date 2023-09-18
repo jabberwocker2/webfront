@@ -2,10 +2,12 @@
     <div :id="`commentTile-${comment.id}`" class="overflow-y-visible">
         <div class="relative w-[600px] block" >
             <p class="font-medium">{{comment.user.name}}</p>
-            <div class="commentTileSelect border-[1px] border-gray-300 p-1 w-fit max-w-[50ch]     rounded-2xl" :id="`commentTileSelect-${comment.id}`">
+            <div class="commentTileSelect border-[1px] border-gray-300 p-1 w-fit max-w-[50ch]  rounded-2xl justify-around" :id="`commentTileSelect-${comment.id}`">
                 <p>{{ comment.text }}</p>
-                <Icon @click="commonFunctions.toggleTextArea(posts.id,comment.id,primaryObject)" name="ri:share-forward-fill" size="20"  />
-
+            </div>
+            <div class="flex w-[20%] justify-around mt-1">
+                <Icon @click="commonFunctions.toggleTextArea(posts.id,comment.id,primaryObject)" name="ri:share-forward-fill" size="20" class="text-gray-400" />
+                <Icon @click="isLiked ? unlikePost(comment) : likePost(comment)" name="mdi:lightbulb" size="20" class="text-gray-400"/>
             </div>
             <textarea  :id="`openReplyTextArea-${comment.id}`"  cols="30" rows="4" v-model="userBio" maxlength="80" class="
                 resize-none
@@ -20,13 +22,13 @@
                 focus:outline-none
             " style="display: none"></textarea>
                 <div v-for="replies in posts.comments" class="ml-3 border-l-[1px]">
-                    <ReplyTile v-if="(replies.main_parent_id === comment.id) && (replies.level_id === 1)" :replies="replies" :posts=posts  />
-
-            </div>
+                    <CommentTile v-if="(replies.parent_id === comment.id) && (replies.level_id === (comment.level_id +1))" :comment="replies" :posts=posts  />
+                </div>
             <button :id="`postCommentButton-${comment.id}`"
                     class="  flex items-center bg-[white] text-black  rounded-full  px-3 ml-[200px]" style="display: none">
                     <Icon name="ri:share-forward-fill" size="35" />
             </button>
+
         </div>
     </div>
 </template>
@@ -56,6 +58,34 @@ onMounted( () => {
     document.getElementById('postCommentButton-'+comment.value.id).addEventListener('click',function() { console.log('replies value',replyValue); commonFunctions.postComment(posts.value.id,comment.value.id,comment.value.level_id+1,comment.value.id,$userStore,document.getElementById('openReplyTextArea-'+comment.value.id).value,'openReplyTextArea-'+comment.value.id,'postCommentButton-'+comment.value.id)})
 })
 
+const isLiked = computed(() => {
+    console.log(comment);
+    let res = comment.value.likes.find(like => like.user_id === $userStore.id)
+    return !!res;
+})
+const likePost = async (post) => {
+    if (!$userStore.id) {
+        $generalStore.isLoginOpen = true
+        return
+    }
+    try {
+        await $userStore.likePost(post)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const unlikePost = async (post) => {
+    if (!$userStore.id) {
+        $generalStore.isLoginOpen = true
+        return
+    }
+    try {
+        await $userStore.unlikePost(post, false)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 </script>
 

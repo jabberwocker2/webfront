@@ -118,7 +118,7 @@
                             <CommentTile v-if="comment.level_id === 0" :comment="comment" :posts="post"/>
                         </div>
                     </div>
-                    <div v-if="post.video == 'http://localhost:8000'" class="relative">
+                    <div v-if="post.video[0] === constants.base_url" class="relative">
                     </div>
                     <div v-else class="relative mr-[20px]">
                     </div>
