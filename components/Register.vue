@@ -76,7 +76,7 @@ const register = async () => {
         await $generalStore.getRandomUsers('following')
         $generalStore.isLoginOpen = false
     } catch (error) {
-        console.log(error)
+
         errors.value = error.response.data.errors
     }
 }

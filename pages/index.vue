@@ -1,14 +1,16 @@
 <template>
     <MainLayout>
+        <SideNavMain />
         <vue-scroll-snap class="grid justify-self-center" id="scroll">
             <div v-for="post in $generalStore.posts" :key="post"
-                class=" pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
+                 class=" pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
                 <div class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
                     <PostMain v-if="post" :post="post" />
                 </div>
             </div>
         </vue-scroll-snap>
     </MainLayout>
+
 </template>
 
 <script setup>
@@ -19,9 +21,9 @@ const { $generalStore, $userStore } = useNuxtApp()
 onMounted(async () => {
     try {
         $generalStore.getAllUsersAndPosts('')
-        console.log($userStore.color, "color");
+
     } catch (error) {
-        console.log(error)
+
     }
 })
 </script>

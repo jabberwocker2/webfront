@@ -54,12 +54,12 @@ onMounted (() => {
     // })
 
     let tagsButton = document.getElementsByClassName('tagsButton');
-    console.log(tagsButton,"tagsButton");
+
     for (let i = 0;i < tagsButton.length;i++) {
         if((i%3) === 0) {
-            console.log(tagsButton[i],"tagsButtonif");
+
             let classList = tagsButton[i].getAttribute("class");
-            console.log(classList,"tagsButtonifclass");
+
             classList = classList.replace("snap-center","");
             tagsButton[i].setAttribute("class",classList);
         }
@@ -76,7 +76,7 @@ const tagExit = () => {
 const searchWithTags = (tags, component) => {
     let searchQuery = '';
 
-    console.log("reached search", component.target.id);
+
     if (document.getElementById(component.target.id).style.backgroundColor) {
         document.getElementById(component.target.id).style.backgroundColor = "";
         document.getElementById(component.target.id).style.color = "#004151";

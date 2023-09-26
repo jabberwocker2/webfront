@@ -307,7 +307,7 @@ const likePost = async () => {
     try {
         await $userStore.likePost($generalStore.selectedPost, true)
     } catch (error) {
-        console.log(error)
+
     }
 }
 
@@ -315,7 +315,7 @@ const unlikePost = async () => {
     try {
         await $userStore.unlikePost($generalStore.selectedPost, true)
     } catch (error) {
-        console.log(error)
+
     }
 }
 
@@ -328,7 +328,7 @@ const deletePost = async () => {
             router.push(`/profile/${$userStore.id}`)
         }
     } catch (error) {
-        console.log(error)
+
     }
 }
 
@@ -338,7 +338,7 @@ const addComment = async () => {
         comment.value = null
         document.getElementById('Comments').scroll({ top:0, behavior:'smooth' });
     } catch (error) {
-        console.log(error)
+
     }
 }
 
@@ -349,7 +349,7 @@ const deleteComment = async (post, commentId) => {
             await $userStore.deleteComment(post, commentId)
         }
     } catch (error) {
-        console.log(error)
+
     }
 }
 </script>
