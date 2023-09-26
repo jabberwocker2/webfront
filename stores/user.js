@@ -109,54 +109,79 @@ export const useUserStore = defineStore('user', {
       }
     },
 
-    async likePost(post, isPostPage) {
-      let res = await $axios.post('/api/likes', {
-        post_id: post.id,
-        type: "post"
-      })
+    async likePost(post, type = "post",isPostPage) {
+      if(type === "post") {
+        let res = await $axios.post('/api/likes', {
+          post_id : post.id,
+          type: "post"
+        })
+        let singlePost = null
 
-      console.log(res)
-
-      let singlePost = null
-
-      if (isPostPage) {
-        singlePost = post
+        if (isPostPage) {
+          singlePost = post
+        } else {
+          singlePost = useGeneralStore().posts.find(p => p.id === post.id)
+        }
+        
+        singlePost.likes.push(res.data.like)
       } else {
-        singlePost = useGeneralStore().posts.find(p => p.id === post.id)
+        
+        let res = await $axios.post('/api/likes', {
+          comment_id : post.id,
+          type: "comment"
+        })
       }
-      console.log(singlePost)
-      singlePost.likes.push(res.data.like)
+
+      // } else {
+      //   let res = await $axios.post('/api/likes', {
+      //     comment_id: post.id,
+      //     type: "comment"
+      //   })
+      // }
+
+
+
+
     },
 
-    async unlikePost(post, isPostPage) {
-      let deleteLike = null
-      let singlePost = null
+    async unlikePost(post, isPostPage,type = 'post') {
+      if(type === "post") {
 
-      if (isPostPage) {
-        singlePost = post
+        let deleteLike = null
+        let singlePost = null
+
+        if (isPostPage) {
+          singlePost = post
+        } else {
+          singlePost = useGeneralStore().posts.find(p => p.id === post.id)
+        }
+        singlePost.likes.forEach(like => {
+          if (like.user_id === this.id) {
+            
+            deleteLike = like
+          }
+        });
+
+        let res = await $axios.delete('/api/likes/' + deleteLike.id)
+
+        for (let i = 0; i < singlePost.likes.length; i++) {
+          const like = singlePost.likes[i];
+          if (like.id === res.data.like.id) {
+            singlePost.likes.splice(i, 1);
+          }
+        }
       } else {
-        singlePost = useGeneralStore().posts.find(p => p.id === post.id)
-      }
 
-      singlePost.likes.forEach(like => {
-        if (like.user_id === this.id) { deleteLike = like }
-      });
-
-      let res = await $axios.delete('/api/likes/' + deleteLike.id)
-
-      for (let i = 0; i < singlePost.likes.length; i++) {
-        const like = singlePost.likes[i];
-        if (like.id === res.data.like.id) { singlePost.likes.splice(i, 1); }
       }
     },
 
     async follow(userFollowID) {
-      console.log(userFollowID)
+      
       let res = await $axios.post('/api/follow', {
         user_id: userFollowID,
       })
 
-      console.log(res)
+      
     },
 
     async logout() {

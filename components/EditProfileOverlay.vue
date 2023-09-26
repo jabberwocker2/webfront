@@ -179,7 +179,7 @@ const cropAndUpdateImage = async () => {
         userImage.value = image.value
         uploadedImage.value = null
     } catch (error) {
-        console.log(error)
+
     }
 }
 
@@ -196,7 +196,7 @@ const updateUserInfo = async () => {
             $generalStore.isEditProfileOpen = false
         }, 100)
     } catch (error) {
-        console.log(error)
+
     }
 }
 

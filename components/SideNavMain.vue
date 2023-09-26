@@ -6,56 +6,37 @@
     >
         
         <div class="lg:w-full w-[55px] mx-auto">
-            <NuxtLink to="/">
-                <MenuItem iconString="For You" colorString="black" sizeString="30"/>
+            <NuxtLink to="/" class="flex items-center hover:bg-gray-100 rounded-md w-full py-1.5 px-2">
+                <Icon class="self-center" name="mdi:home" size="27" />
             </NuxtLink>
-            <MenuItem iconString="Following" colorString="#000000" sizeString="27"/>
-
-            <div class="border-b lg:ml-2 mt-2" />
-
-            <div class="lg:block hidden text-xs text-gray-600 font-semibold pt-4 pb-2 px-2">
-                Suggested accounts
-            </div>
-
-            <div class="lg:hidden block pt-3" />
-
-
-            <div 
-                v-if="$generalStore.suggested" 
-                v-for="sug in $generalStore.suggested"
-            >
-                <div @click="isLoggedIn(sug)" class="cursor-pointer">
-                    <MenuItemFollow :user="sug" />
-                </div>
+            <div  class="flex items-center hover:bg-gray-100 rounded-md w-full py-1.5 px-2">
+                <Icon class="self-center" name="mdi:account-multiple" size="27" @click="showWidgets()"/>
             </div>
 
 
-            <button class="lg:block hidden text-[black] pt-1.5 pl-2 text-[13px]">
-                See all
-            </button>
 
-            <div v-if="$userStore.id">
-                <div class="border-b lg:ml-2 mt-2" />
 
-                <div class="lg:block hidden text-xs text-gray-600 font-semibold pt-4 pb-2 px-2">
-                    Following accounts
-                </div>
+<!--            <div v-if="$userStore.id">-->
+<!--                <div class="border-b lg:ml-2 mt-2" />-->
 
-                <div class="lg:hidden block pt-3" />
+<!--                <div class="lg:block hidden text-xs text-gray-600 font-semibold pt-4 pb-2 px-2">-->
+<!--                    Following accounts-->
+<!--                </div>-->
 
-                <div 
-                    v-if="$generalStore.following" 
-                    v-for="fol in $generalStore.following"
-                >
-                    <div @click="isLoggedIn(fol)" class="cursor-pointer">
-                        <MenuItemFollow :user="fol" />
-                    </div>
-                </div>
+<!--                <div class="lg:hidden block pt-3" />-->
 
-                <button class="lg:block hidden text-[black] pt-1.5 pl-2 text-[13px]">See more</button>
+<!--                <div -->
+<!--                    v-if="$generalStore.following" -->
+<!--                    v-for="fol in $generalStore.following"-->
+<!--                >-->
+<!--                    <div @click="isLoggedIn(fol)" class="cursor-pointer">-->
+<!--                        <MenuItemFollow :user="fol" />-->
+<!--                    </div>-->
+<!--                </div>-->
 
-            </div>
-            <div class="lg:block hidden border-b lg:ml-2 mt-2" />
+<!--                <button class="lg:block hidden text-[black] pt-1.5 pl-2 text-[13px]">See more</button>-->
+
+<!--            </div>-->
 
            
 
@@ -76,5 +57,14 @@ const isLoggedIn = (fol) => {
         return
     }
     setTimeout(() => router.push(`/profile/${fol.id}`), 200)
+}
+
+const showWidgets = () => {
+console.log('reached here');
+document.getElementById('scroll').style.opacity = '0';
+setTimeout(() =>  document.getElementById('scroll').style.display = 'none', 200)
+
+
+
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
-    <div :id="`PostMain-${post.id}`" class="block">
 
+    <div :id="`PostMain-${post.id}`" class="block" data-te-infinite-scroll-init>
         <div :id="`slideContainer${post.id}`" class="slideContainer flex max-w-[500px] min-h-[900px]  transition-[min-height] 1s ease-in-out max-h-[0px] overflow-x-auto overflow-y-hidden snap-mandatory snap-x">
             <div :id="`repost${post.id}`" class="snap-center z-10 min-w-[500px]" style="display: none">
                 <p class="justify-self-center self-center text-xl">Repost ====></p>
@@ -8,7 +8,7 @@
             <div v-if="(post.repostUrl !== false) && post.repostUrl !== null" :id="`repostedVideoContainer${post.id}`"
                  class="flex rounded-xl  object-cover h-full  z-0  snap-center self-center">
 
-                <video :id="`repostedVideoElement${post.id}`" ref="video" loop muted
+                <video :id="`repostedVideoElement${post.id}`" ref="video" loop muted autoplay="on"
                        class="rounded-xl object-cover  min-h-[900px] max-w-[500px] z-0 "
                        :src="constants.base_url+post.repostUrl"/>
 
@@ -16,9 +16,9 @@
             <div :id="`videoContainer${post.id}`"
                  class="flex rounded-xl  object-cover h-full  z-0  snap-center self-center">
 
-                <video :id="`videoElement${post.id}`" ref="video" loop muted
-                       class="rounded-xl object-cover  min-h-[900px] max-w-[500px] z-0 "
-                       :src="constants.base_url+post.video[0]"/>
+                <video :id="`videoElement${post.id}`" ref="video" loop controls preload="none" muted
+                       class=" rounded-xl object-cover  min-h-[900px] max-w-[500px] z-0 "
+                       :src="post.video[0]"/>
 
             </div>
             <div v-for="slides in (post.video).filter(slide => !slide.includes('mp4'))" :key="video" class="snap-center z-10 min-w-[500px]">
@@ -57,13 +57,14 @@
                         <div>
 
                             <button @click="isLiked ? unlikePost(post) : likePost(post)"
-                                    class=" pt-2 pb-2 cursor-pointer text-[white]">
-                                <Icon name="mdi:lightbulb" size="25" :color="isLiked ? '#f0cc2c' : ''"/>
+                                    class=" cursor-pointer text-[white]">
+
+                                <Icon name="mdi:lightning-bolt-outline" size="45px" :color="isLiked ? '#f0cc2c' : ''"/>
                             </button>
                         </div>
                         <span class="text-xs text-[white] font-semibold self-center">{{ post.likes.length }}</span>
                     </div>
-                    <button @click="replyToComment(post.id, $event, comment, 'mainComment')"
+                    <button @click="replyToComment(post.id, $event, comment,'mainComment')"
                             :id="`discussButton${post.id}`"
                             class="  flex items-center bg-[transparent] text-black  rounded-2xl  px-3 w-[200px] transition-[width] duration-100 ease-in-out border-[2px] border-gray-300 justify-between z-11  backdrop-blur-2xl">
                         <p class="text-[white] font-bold">Discuss</p>
@@ -71,7 +72,7 @@
                               size="40"/>
 
                         <span class="text-xs text-[violet] self-center"
-                              :id="`numberTab${post.id}`">{{ post.comments.length }}</span>
+                              :id="`numberTab${post.id}`"></span>
                         <button class="z-10"
                                 @click="postComment(post.id, $event, parent_comment_id, level_id, main_parent_id) "
                                 :id="`postCommentButton${post.id}`" style="display: none">
@@ -83,6 +84,7 @@
                                   size="25"/>
                         </button>
                     </button>
+                    <button :id="`expandCommentSection${post.id}`">expand</button>
                 </div>
             </div>
             <div>
@@ -109,15 +111,21 @@
                                     " :id="`textArea${post.id}`" maxlength="200">
                     </textarea>
                 </div>
+
                 <div class="flex overflow-hidden min-h-[800px]">
                     <!--                    thought container main-->
+
                     <div :id="`thoughtContainer${post.id}`"
+
                          @scroll="commonFunctions.closeTextArea(post.id)"
                          class="debate relative bottom-[500px] h-[600px] min-w-[365px] transition-[bottom] items-center bg-white dark:bg-black-200  rounded-xl cursor-pointer pt-[20px] transition-[height] duration-200 ease-in-out">
-                            <div v-for="comment in post.comments" :key="comment" class="commentSection overflow-y-visible">
-                            <CommentTile v-if="comment.level_id === 0" :comment="comment" :posts="post"/>
-                        </div>
+
+                            <template v-for="comment in $generalStore.commentsForPost.filter(com => com.level === 0).filter(pos => (pos.post_id === post.id))" :key="comment" class="commentSection overflow-y-visible">
+                                <CommentTile v-if="comment.level === 0" :comment="comment" :posts="post"/>
+                            </template>
+
                     </div>
+
                     <div v-if="post.video[0] === constants.base_url" class="relative">
                     </div>
                     <div v-else class="relative mr-[20px]">
@@ -127,10 +135,12 @@
             </div>
         </div>
     </div>
+
 </template>
 <script setup>
 import commonFunctions from '../components/commonFunction';
 import constants from '../constants'
+import {RecycleScroller} from "vue-virtual-scroller";
 const props = defineProps(['post', 'user'])
 const {$generalStore, $userStore, $profileStore} = useNuxtApp();
 const {post, user} = toRefs(props)
@@ -145,17 +155,23 @@ var temp = new Array();
 var level_id = null;
 temp = str.split(",");
 let video = ref(null)
-
+$generalStore.commentsForPost = [];
 
     onMounted(() => {
         $generalStore.selectedPost = post.value;
         let observer = new IntersectionObserver(function (entries) {
             if (entries[0].isIntersecting) {
-                console.log('Element is playing' + post.value.id);
                 video.value.play()
+                setTimeout(function ()  {
+                    let videoEle = document.getElementById('videoElement'+post.value.id);
+                    videoEle.muted = !videoEle.muted;
+                },200)
             } else {
-                console.log('Element is paused' + post.value.id);
                 video.value.pause()
+                setTimeout(function ()  {
+                    let videoEle = document.getElementById('videoElement'+post.value.id);
+                    videoEle.muted = videoEle.muted;
+                },200)
             }
 
         }, {threshold: [0.6]});
@@ -166,11 +182,11 @@ let video = ref(null)
         var slideNumber = 1;
 
         document.getElementById('slideContainer'+post.value.id).addEventListener('wheel', function (e) {
-            console.log("event hpnd",document.getElementById('slideContainer'+post.value.id).scrollLeft);
+
             if(e.deltaX > 0 ) { //alternative options for wheelData: wheelDeltaX & wheelDeltaY
                 //scroll right
                 if(document.getElementById('slideContainer'+post.value.id).scrollLeft < 750 && document.getElementById('slideContainer'+post.value.id).scrollLeft > 250) {
-                    console.log(document.getElementById('slideContainer'+ post.value.id).style.offset)
+
                     document.getElementById("postDetailContainer" +post.value.id).style.opacity = "1";
                     document.getElementById("discussButton"+ post.value.id).style.width = "100px";
                     document.getElementById("commentText"+ post.value.id).style.opacity = "1";
@@ -204,14 +220,14 @@ let video = ref(null)
                 // {
                 //     let height = Number(document.getElementById('videoElement'+post.value.id).style.height.replace("px",""))
                 //     let heightChange = (height) - (height*(2/100));
-                //     console.log(heightChange)
+                //
                 //
                 //     document.getElementById('videoElement'+post.value.id).style.height =  heightChange+"px";
                 // }
-                console.log("RIGHT");
+
             } else {
                 if (document.getElementById('slideContainer'+post.value.id).scrollLeft < 750 && document.getElementById('slideContainer'+post.value.id).scrollLeft > 250 ) {
-                    console.log(document.getElementById('slideContainer'+ post.value.id).style.offset)
+
                     document.getElementById("postDetailContainer" +post.value.id).style.opacity = "1";
                     document.getElementById("discussButton"+ post.value.id).style.width = "100px";
                     document.getElementById("commentText"+ post.value.id).style.opacity = "1";
@@ -242,7 +258,7 @@ let video = ref(null)
                 //     document.getElementById("discussButton"+ post.value.id).append( document.getElementById("discussButton"+ post.value.id).firstChild)
                 // }
                 //scroll left
-                console.log("LEFT");
+
             }
 
             //prevent page fom scrolling
@@ -260,19 +276,19 @@ let video = ref(null)
 
 const animateSlide = (id) => {
 
-    console.log("offset",document.getElementById('slideContainer'+id).style)
+
     // if(document.getElementById('videoElement'+id).style.maxWidth < ) {
     //     document.getElementById('videoElement'+id).style.maxWidth -= document.getElementById('videoContainer'+id).style.offset;
     // } else {
     //     document.getElementById('videoElement'+id).style.maxWidth = "500px";
     // }
 }
-const toggleThoughtContainer = (id, type) => {
-    console.log(type);
+const toggleThoughtContainer = async (id, type) => {
+
     document.getElementById("discussButton" + id).children[0].style.color = "white";
     if (document.getElementById("discussButton" + id).style.width === "473px" || document.getElementById("discussButton" + id).children[0].innerHTML === "Close") {
         document.getElementById("discussButton" + id).style.width = "200px";
-        console.log(document.getElementById("discussButton" + id).children);
+
         document.getElementById("discussButton" + id).style.borderColor = "lightgray";
         document.getElementById("thoughtContainer" + id).style.bottom = "600px";
         document.getElementById("discussButton" + id).children[0].innerHTML = "Discuss";
@@ -284,7 +300,12 @@ const toggleThoughtContainer = (id, type) => {
         document.getElementById("commentText" +id).style.opacity = "1";
         document.getElementById("sparkContainer" +id).style.display = "flex";
     } else {
-        console.log(document.getElementById("discussButton" + id).children[0].innerHTML);
+        $generalStore.commentsForPost = [];
+        try {
+            await $generalStore.getPostComment(id)
+        } catch (error) {
+            console.log('error',error);
+        }
         document.getElementById("discussButton" + id).children[0].innerHTML = "Post";
         document.getElementById("discussButton" + id).style.borderColor = "darkgray";
         document.getElementById("discussButton" + id).style.width = "473px";
@@ -299,7 +320,7 @@ const toggleThoughtContainer = (id, type) => {
         document.getElementById("commentText" +id).style.opacity = "0";
         document.getElementById("sparkContainer" +id).style.display = "none";
     }
-    console.log("open thought container")
+
 }
 
 const isLiked = computed(() => {
@@ -313,6 +334,7 @@ const isFollow = computed(() => {
 })
 
 
+
 const likePost = async (post) => {
     if (!$userStore.id) {
         $generalStore.isLoginOpen = true
@@ -321,7 +343,7 @@ const likePost = async (post) => {
     try {
         await $userStore.likePost(post)
     } catch (error) {
-        console.log(error)
+
     }
 }
 
@@ -333,7 +355,7 @@ const unlikePost = async (post) => {
     try {
         await $userStore.unlikePost(post, false)
     } catch (error) {
-        console.log(error)
+
     }
 }
 
@@ -345,39 +367,43 @@ const follow = async (userToFollowID) => {
     try {
         await $userStore.follow(userToFollowID)
     } catch (error) {
-        console.log(error)
+
     }
 }
 
-const replyToComment = (post, eventClick, comment, replyMode, level = null, mainParentId = null) => {
+const replyToComment = async (post, eventClick, comment, replyMode, level = null, mainParentId = null) => {
+
+    console.log('error',$generalStore.commentsForPost);
     if (document.getElementById("discussButton" + post)) {
+
         if (replyMode == 'mainComment') {
-            console.log("event click inside main comment", comment);
+
         } else {
-            console.log("event click inside reply comment", comment.id);
+
             parent_comment_id = comment.id;
             level_id = level;
             main_parent_id = mainParentId;
         }
         if (document.getElementById("commentReplyArea_" + post).style.display == "none") {
             document.getElementById("commentReplyArea_" + post).style.display = "flex";
-            console.log("reached if");
+
         } else {
             document.getElementById("commentReplyArea_" + post).style.display = "none";
-            console.log("reached else");
+
 
         }
         if ((document.getElementById("discussButton" + post).children[0].innerHTML === "Close") || (document.getElementById("discussButton" + post).children[0].innerHTML === "Discuss")) {
             document.getElementById("postCommentButton" + post).style.display = "Block";
             document.getElementById("discussButton" + post).children[0].style.marginLeft = 0;
             toggleThoughtContainer(post, 'open');
-            console.log("post event comment reply", post);
+
         }
     } else {
         toggleVideoCommentSection(post);
     }
 }
-const toggleVideoCommentSection = (id) => {
+const toggleVideoCommentSection = async (id) => {
+
     document.getElementById("videoContainer" + id).style.maxHeight = "250px";
     document.getElementById("commentSectionArea" + id).style.maxHeight = "473px";
 }
@@ -396,8 +422,13 @@ const postComment = async (id, elementButton, parent_id, level_id, mainParentId)
     } catch (error) {
     }
 }
+
 </script>
 <style>
+
+video::-webkit-media-controls-panel {
+    display: none !important;
+    opacity: 1 !important;}
 .debate {
     overflow: scroll;
     width: 1200px;
@@ -416,6 +447,7 @@ const postComment = async (id, elementButton, parent_id, level_id, mainParentId)
     /* IE and Edge */
     scrollbar-width: none;
     /* Firefox */
+    content-visibility: hidden;
 
 }
 

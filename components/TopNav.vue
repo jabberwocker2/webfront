@@ -21,7 +21,6 @@
                 <button @click="isLoggedIn()"
                     class="flex items-center border rounded-sm px-3 py-[6px] 	  ">
                     <Icon name="mdi:plus" size="22" />
-                    <span class="px-2 font-medium text-[15px]">Upload</span>
                 </button>
 
                 <div v-if="!$userStore.id" class="flex items-center">
@@ -87,7 +86,7 @@ const logout = () => {
         $userStore.logout()
         router.push('/')
     } catch (error) {
-        console.log(error)
+
     }
 }
 </script>

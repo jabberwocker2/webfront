@@ -56,7 +56,7 @@ const displayPost = (post) => {
     setTimeout(() => router.push(`/post/${post.id}`), 300)
 }
 const isHover = (bool) => {
-    console.log(video.value.currentSrc);
+
     if (video.value.currentSrc != 'http://localhost:8000/') {
         if (bool) {
             video.value.play()

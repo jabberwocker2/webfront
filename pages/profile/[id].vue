@@ -1,29 +1,22 @@
 <template>
     <MainLayout>
         <div id="profileContainer" v-if="$profileStore.name" :class="`bg-gradient-to-br from-white to-${$userStore.color}-500`"
-            class=" pt-[10px] 2xl:pl-[185px] lg:pl-[240px] lg:pr-0 pr-2 w-[calc(100%-90px)] max-w-[1800px] 2xl:mx-auto ">
+             class=" pt-[10px] 2xl:pl-[185px] lg:pl-[240px] lg:pr-0 pr-2 w-[calc(100%-90px)] max-w-[1800px] 2xl:mx-auto ">
             <div class="flex w-[calc(100vw-230px)]">
                 <img class="max-w-[120px] rounded-full" :src="$profileStore.image">
                 <div class="ml-5 w-full">
-                    <div class="flex text-[30px] font-bold truncate">
-                      {{ $generalStore.allLowerCaseNoCaps($profileStore.name) }}
-                      {{console.log('reached profile store', $profileStore.hatColor)}}
-                      <Icon class="ml-[40px] self-center  " :class="`text-${$profileStore.hatColor}-600`" name="mdi:school"  size="50" :id="allLikes"   />
-
+                    <div class="text-[30px] font-bold truncate">
+                        {{ $generalStore.allLowerCaseNoCaps($profileStore.name) }}
                     </div>
-                    <div>
-                      <div class="text-[18px] truncate">{{ $profileStore.name }}</div>
-
-
-                    </div>
+                    <div class="text-[18px] truncate">{{ $profileStore.name }}</div>
                     <button v-if="$profileStore.id === $userStore.id" @click="$generalStore.isEditProfileOpen = true"
-                        class="flex item-center rounded-md py-1.5 px-3.5 mt-3 text-[15px] font-semibold border hover:bg-gray-100">
+                            class="flex item-center rounded-md py-1.5 px-3.5 mt-3 text-[15px] font-semibold border hover:bg-gray-100">
                         <Icon class="mt-0.5 mr-1" name="mdi:pencil" size="18" />
                         <div>Edit profile</div>
                     </button>
 
                     <button v-else @click="follow()"
-                        class="flex item-center rounded-md py-1.5 px-8 mt-3 text-[15px] text-white font-semibold bg-[#f0cc2c]">
+                            class="flex item-center rounded-md py-1.5 px-8 mt-3 text-[15px] text-white font-semibold bg-[#f0cc2c]">
                         Follow
                     </button>
                 </div>
@@ -32,13 +25,10 @@
             <div class="flex items-center pt-4">
 
                 <div class="mr-4">
-
-                    {{ console.log("no of follwers",$profileStore) }}
                     <span class="font-bold">{{ $profileStore.noOfFollwers  }}</span>
                     <span class="text-gray-500 font-light text-[15px] pl-1.5">Followers</span>
                 </div>
-                <div class="flex mr-4" >
-
+                <div class="mr-4">
                     <span class="font-bold">{{ allLikes }}</span>
                     <span class="text-gray-500 font-light text-[15px] pl-1.5">Sparks</span>
                 </div>
@@ -90,5 +80,4 @@ watch(() => posts.value, () => {
     setTimeout(() => show.value = true, 300)
 
 })
-
 </script>

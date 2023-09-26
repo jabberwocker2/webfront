@@ -1,8 +1,7 @@
 <template>
-  <NuxtPage />
-  <AuthOverlay v-if="isLoginOpen" />
-  <EditProfileOverlay v-if="isEditProfileOpen" />
-
+    <NuxtPage  />
+    <AuthOverlay v-if="isLoginOpen" />
+    <EditProfileOverlay v-if="isEditProfileOpen" />
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
@@ -23,7 +22,7 @@ onMounted(async () => {
             $userStore.getUser()
         } 
     } catch (error) {
-        console.log(error)
+
     }
 })
 

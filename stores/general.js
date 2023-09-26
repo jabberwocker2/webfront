@@ -27,7 +27,10 @@ export const useGeneralStore = defineStore('general', {
     newsTag:false,
     selectedTags:null,
     replyActive:false,
-    comments:null
+    comments:null,
+    currentPostId:null,
+    commentsForPost:null,
+    componentGenerate:null,
   }),
   actions: {
     bodySwitch(val) {
@@ -76,6 +79,20 @@ export const useGeneralStore = defineStore('general', {
       this.$state.ids = res.data.ids
     },
 
+    getPostComment: async function (id) {
+      console.log(id);
+      let res = await $axios.get('/api/getPostComments?id=' + id)
+      console.log(res, 'response');
+      for (let i = 0; i < res.data.comment.length; i++) {
+        this.$state.commentsForPost.push(res.data.comment[i]);
+      }
+    },
+
+    async Loaded(id) {
+    },
+    async unLoaded() {
+    },
+
     async getRandomUsers(type,id=null) {
       let res = await $axios.get(`/api/get-random-users?id=`+id)
 
@@ -85,7 +102,7 @@ export const useGeneralStore = defineStore('general', {
 
       if (type === 'following') {
       this.following = res.data.following
-      console.log(this.following,"this follow");
+      
 
       }
     },
@@ -103,6 +120,8 @@ export const useGeneralStore = defineStore('general', {
       let res = await $axios.get('/api/home?tags='+tags)
       this.posts = res.data
       this.comments = this.posts.comments
+      this.$state.currentPostId = 1;
+
     }
   },
   persist: true,

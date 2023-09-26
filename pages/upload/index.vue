@@ -107,7 +107,7 @@ onMounted(async () => {
     function removeListItem(e){
         const item = e.target.parentElement;
 
-        console.log(e,"target");
+
         item.remove();
     }
 
@@ -117,7 +117,7 @@ onMounted(async () => {
     });
 
     addBtn.onclick = function(e){
-        console.log(e);
+
         const item = document.createElement('div');
         const textArea = document.createElement('textarea');
         const closeButton = document.createElement('button')
@@ -163,7 +163,7 @@ const onDrop = (e) => {
 }
 
 const selectTag = (value) => {
-    console.log(value.target.innerHTML);
+
     tags += ", " + value.target.innerHTML;
     return tags;
 }
@@ -196,7 +196,7 @@ const createPost = async () => {
     data.append('text', caption.value || '')
     data.append('tags', tags)
     data.append('textValueForSlide',textValueForSlide);
-    console.log(fileData.value,'upload data');
+
 
     if (fileData.value && caption.value) {
         isUploading.value = true
@@ -212,7 +212,7 @@ const createPost = async () => {
         }
     } catch (error) {
         errors.value = error.response.data
-        console.log(errors.value)
+
         isUploading.value = false
     }
 }

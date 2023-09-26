@@ -22,7 +22,7 @@ commonFunctions.postComment = async (id, parent_id, level_id, mainParentId, user
         document.getElementById(button).style.display = "none";
 
     } catch (error) {
-        console.log(error)
+        
     }
 
 }
@@ -31,7 +31,7 @@ commonFunctions.postComment = async (id, parent_id, level_id, mainParentId, user
 //change height
 commonFunctions.changeHeight  = async (id) => {
     document.getElementById("commentReplyArea_"+id).style.height = "auto";
-    console.log(document.getElementById("textArea"+id).value);
+    
     document.getElementById("commentReplyArea_"+id).style.height = (document.getElementById("textArea"+id).scrollHeight+2)+"px";
     if(document.getElementById("discussButton"+id).children[0].innerHTML === "Post") {
         commonFunctions.showCharacterCount(id);
@@ -93,14 +93,14 @@ commonFunctions.closeTextAreaWithButton = (id) => {
     document.getElementById("discussButton"+id).children[0].style.marginLeft = "35%";
     document.getElementById("discussButton"+id).children[0].innerHTML = "Close";
     document.getElementById("discussButton"+id).addEventListener('mouseenter', function(e) {
-        console.log("mouse enter");
+        
         if(document.getElementById("discussButton"+id).children[0].innerHTML === "Close") {
             document.getElementById("discussButton"+id).children[0].style.color = "transparent";
             document.getElementById("discussButton"+id).style.background = "red";
         }
     });
     document.getElementById("discussButton"+id).addEventListener('mouseleave', function(e) {
-        console.log("mouse enter");
+        
             document.getElementById("discussButton"+id).children[0].style.color = "Black";
             document.getElementById("discussButton"+id).style.background = "transparent";
     });
@@ -109,9 +109,14 @@ commonFunctions.closeTextAreaWithButton = (id) => {
     document.getElementById("thoughtContainer"+id).style.bottom = "100px";
 
 }
-
+commonFunctions.initialState = (className) => {
+    for(let i=0;i<document.getElementsByClassName(className).length;i++) {
+        document.getElementsByClassName(className)[i].style.width = "30%";
+    }
+}
 //closeTextArea
 commonFunctions.closeTextArea  =  (id) => {
+
     if((document.getElementById("thoughtContainer"+id).scrollTop === 0)) {
         commonFunctions.openTextAreaWithButton(id);
 
@@ -119,18 +124,25 @@ commonFunctions.closeTextArea  =  (id) => {
         for(let i=0;i<document.getElementsByClassName("commentTileSelect").length;i++) {
             document.getElementsByClassName("commentTileSelect")[i].style.borderColor = "lightgray";
         }
+        commonFunctions.initialState("tileBoxClass");
         commonFunctions.closeTextAreaWithButton(id);
+
     }
 }
 
 //toggleTextArea
 commonFunctions.toggleTextArea = (id,commentId,primaryObject) => {
+    commonFunctions.initialState("tileBoxClass");
     if(document.getElementById("discussButton"+id).children[0].innerHTML === "Close") {
         commonFunctions.openTextAreaWithButton(id);
+        document.getElementById("commentTileSelect-"+commentId).style.borderColor = "black"
+        document.getElementById("tileBox"+commentId).style.width = "80%"
+
+        document.getElementById("commentTileSelect-"+commentId).style.borderWidth = "3px"
         document.getElementById("postCommentButton"+id).style.display = "none";
         document.getElementById("replyCommentButton"+id).style.display = "Block";
         let replyValue = document.getElementById("textArea"+id);
-        console.log(replyValue,"replyValueInCommon");
+        
         document.getElementById("replyCommentButton"+id).addEventListener('click',function () {commonFunctions.postComment(primaryObject.post_id,primaryObject.comment_id,primaryObject.level_id,primaryObject.comment_value_id,primaryObject.userStore,(document.getElementById("textArea"+id).value),primaryObject.textArea,primaryObject.button)})
 
          // border color logic ?
@@ -139,6 +151,7 @@ commonFunctions.toggleTextArea = (id,commentId,primaryObject) => {
     } else {
         document.getElementById("replyCommentButton"+id).style.display = "none";
         document.getElementById("postCommentButton"+id).style.display = "Block";
+        document.getElementById("tileBox"+commentId).style.width = "30%"
         for(let i=0;i<document.getElementsByClassName("commentTileSelect").length;i++) {
 
             document.getElementsByClassName("commentTileSelect")[i].style.borderColor = "lightgray";
