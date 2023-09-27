@@ -27,6 +27,7 @@ commonFunctions.postComment = async (id, parent_id, level_id, mainParentId, user
 
 }
 
+commonFunctions.currentPostId = 0;
 
 //change height
 commonFunctions.changeHeight  = async (id) => {
@@ -116,7 +117,6 @@ commonFunctions.initialState = (className) => {
 }
 //closeTextArea
 commonFunctions.closeTextArea  =  (id) => {
-
     if((document.getElementById("thoughtContainer"+id).scrollTop === 0)) {
         commonFunctions.openTextAreaWithButton(id);
 

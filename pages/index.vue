@@ -1,13 +1,19 @@
 <template>
     <MainLayout>
         <SideNavMain />
-        <vue-scroll-snap class="grid justify-self-center" id="scroll">
-            <div v-for="post in $generalStore.posts" :key="post"
-                 class=" pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
-                <div class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
-                    <PostMain v-if="post" :post="post" />
+        <vue-scroll-snap class="grid justify-self-center" id="scroll" >
+
+
+            <div v-for="post in $generalStore.posts" class="pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
+                <div  class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
+                    <PostMain  :post="post" />
                 </div>
             </div>
+
+
+
+
+
         </vue-scroll-snap>
     </MainLayout>
 
@@ -16,7 +22,8 @@
 <script setup>
 import MainLayout from '~/layouts/MainLayout.vue';
 import VueScrollSnap from "vue-scroll-snap";
-const { $generalStore, $userStore } = useNuxtApp()
+import {usePostStore} from "~/stores/post";
+const { $generalStore, $userStore,$postStore } = useNuxtApp()
 
 onMounted(async () => {
     try {
@@ -26,6 +33,8 @@ onMounted(async () => {
 
     }
 })
+
+
 </script>
 
 <style>

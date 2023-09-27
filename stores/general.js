@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from './user'
+import { usePostStore } from './post'
 import axios from '../plugins/axios'
+import commonFunctions from "~/components/commonFunction";
 
 const $axios = axios().provide.axios
 
@@ -31,6 +33,8 @@ export const useGeneralStore = defineStore('general', {
     currentPostId:null,
     commentsForPost:null,
     componentGenerate:null,
+    postToIterate:null,
+    allPost:null,
   }),
   actions: {
     bodySwitch(val) {
@@ -107,6 +111,10 @@ export const useGeneralStore = defineStore('general', {
       }
     },
 
+    increaseCurrentPostID() {
+      this.$state.currentPostId++;
+    },
+
     updateSideMenuImage(array, user) {
       for (let i = 0; i < array.length; i++) {
         const res = array[i];
@@ -115,13 +123,29 @@ export const useGeneralStore = defineStore('general', {
         }
       }
     },
+    async paginateScroller(tags,id) {
+      let res = await $axios.get('/api/getPost?tags='+tags+'&getPostId='+id);
+      console.log('reval',res.data)
+      res.data[0].sno = id;
+      this.posts.push(res.data[0]);
+      console.log(this.posts,'resVals');
 
-    async getAllUsersAndPosts(tags) {
+    },
+
+    async getAllUsersAndPosts(tags,noOfPosts = 10) {
+      this.posts = [];
       let res = await $axios.get('/api/home?tags='+tags)
-      this.posts = res.data
-      this.comments = this.posts.comments
       this.$state.currentPostId = 1;
+      // commonFunctions.currentPostId = 1;
+      for(let i=0;i<noOfPosts;i++){
 
+        this.posts.push ( res.data[i])
+      }
+      // for(let i =0;i>this.posts.length;i++)
+      //   if(this.posts[this.$state.currentPostId-1].sno < this.$state.currentPostId +1 ||this.posts[this.$state.currentPostId-1].sno > this.$state.currentPostId -5 ) {
+      //     this.$state.postToIterate.push(this.post[this.$state.currentPostId-1]);
+      //   }
+      this.comments = this.posts.comments
     }
   },
   persist: true,
