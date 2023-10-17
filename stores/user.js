@@ -10,7 +10,8 @@ export const useUserStore = defineStore('user', {
     name: '',
     bio: '',
     image: '',
-    color: 'gray'
+    color: 'gray',
+    text:'',
   }),
   actions: {
 
@@ -74,17 +75,23 @@ export const useUserStore = defineStore('user', {
       if (!main_parent_id) {
         main_parent_id = 0;
       }
-      let res = await $axios.post('/api/comments', {
-        post_id: post,
-        comment: comment,
-        comment_id: parent_id,
-        level: level_id,
-        mainParentId: main_parent_id
-      })
+      // console.log(useGeneralStore().clickedComment.id,parent_id);
+      console.log('reached here 1',comment)
+      if(useGeneralStore().clickedComment.id  === parent_id || parent_id === 0) {
+        let res = await $axios.post('/api/comments', {
+          post_id: post,
+          comment: comment,
+          comment_id: parent_id,
+          level: level_id,
+          mainParentId: main_parent_id
+        })
 
-      if (res.status === 200) {
-        // await this.updateComments(post)
+        if (res.status === 200) {
+           return res
+        }
       }
+
+
     },
 
     async deleteComment(post, commentId) {

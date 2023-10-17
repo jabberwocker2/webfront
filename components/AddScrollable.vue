@@ -6,16 +6,18 @@
 <!--            <div class="buttonTab grid border ">tab 2</div>-->
 <!--            <div class="buttonTab grid border">tab 3</div>-->
 <!--        </div>-->
-        <div  @scroll="tagAnimation()" @mouseenter="tagAnimation()" @mouseleave="tagExit()" class="scrolltags fixed flex overflow-scroll justify-self-center max-w-[500px] m-4 snap-mandatory snap-x left-[50%   ] z-50 opacity-0 transition-[opacity] 2s ease-in-out   ">
+        <div  class="scrolltags fixed justify-self-center max-w-[700px]  snap-mandatory snap-x z-50  2s ease-in-out   ">
             <button :class="`${tags.label}`" :id="`${tags.label}`" v-for="tags in $allTagsGeneral" :key="tags"
                     @click="searchWithTags(tags, $event)"
-                    class="tagsButton snap-center ml-4 text-xs inline-flex items-center font-bold text-[white] leading-sm uppercase px-4 py-2 border   rounded-full cursor-pointer backdrop-blur-md">
+                    class="tagsButton snap-center ml-4 text-xs inline-flex items-center font-bold text-[gray] leading-sm uppercase px-4 py-2 border   rounded-full cursor-pointer mt-2">
 
                 {{ tags.label }}
             </button>
+            <button
+                    class="tagsButton snap-center ml-4 text-xs inline-flex items-center font-bold text-[gray] leading-sm uppercase px-4 py-2 border   rounded-full cursor-pointer">+
+            </button>
         </div>
     </div>
-
 </template>
 
 <script setup>

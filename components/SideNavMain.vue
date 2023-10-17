@@ -1,21 +1,18 @@
 +<template>
     <div 
         id="SideNavMain" 
-        :class="route.fullPath === '/' ? 'lg:w-[250px]' : 'lg:w-[220px]'" 
-        class="fixed z-20 bg-white dark:bg-black h-full lg:border-r-0 border-r w-[75px] overflow-auto"
+        :class="route.fullPath === '/' ? 'lg:w-[200px]' : 'lg:w-[220px]'"
+        class="fixed z-20  dark:bg-black h-full lg:border-r-0 border-r w-[75px] overflow-autoe"
     >
-        
         <div class="lg:w-full w-[55px] mx-auto">
-            <NuxtLink to="/" class="flex items-center hover:bg-gray-100 rounded-md w-full py-1.5 px-2">
-                <Icon class="self-center" name="mdi:home" size="27" />
-            </NuxtLink>
-            <div  class="flex items-center hover:bg-gray-100 rounded-md w-full py-1.5 px-2">
-                <Icon class="self-center" name="mdi:account-multiple" size="27" @click="showWidgets()"/>
+            <div  @click="$generalStore.changePage('home')" class="flex items-center hover:bg-gray-100 rounded-md w-full py-1.5 px-2 transition-all 2s ease-in-out">
+                <Icon class="self-center" name="mdi:home" size="27"/>
+                <p v-if="!$generalStore.expandedPost.id" >Home</p>
             </div>
-
-
-
-
+            <div @click="$generalStore.changePage('profile')" class="flex items-center hover:bg-gray-100 rounded-md w-full py-1.5 px-2 transition-all 2s ease-in-out">
+                <Icon class="self-center" name="mdi:account-multiple" size="27" />
+                <p v-if="!$generalStore.expandedPost.id">Profile</p>
+            </div>
 <!--            <div v-if="$userStore.id">-->
 <!--                <div class="border-b lg:ml-2 mt-2" />-->
 
@@ -37,12 +34,8 @@
 <!--                <button class="lg:block hidden text-[black] pt-1.5 pl-2 text-[13px]">See more</button>-->
 
 <!--            </div>-->
-
-           
-
             <div class="pb-14"></div>
         </div>
-
     </div>
 </template>
 
@@ -60,9 +53,9 @@ const isLoggedIn = (fol) => {
 }
 
 const showWidgets = () => {
-console.log('reached here');
-document.getElementById('scroll').style.opacity = '0';
-setTimeout(() =>  document.getElementById('scroll').style.display = 'none', 200)
+// console.log('reached here');
+// document.getElementById('scroll').style.opacity = '0';
+// setTimeout(() =>  document.getElementById('scroll').style.display = 'none', 200)
 
 
 

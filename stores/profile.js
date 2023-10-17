@@ -23,9 +23,10 @@ export const useProfileStore = defineStore('profile', {
       this.$state.name = res.data.user[0].name
       this.$state.bio = res.data.user[0].bio
       this.$state.image = res.data.user[0].image
+        console.log('api/profile',res.data)
       this.$state.noOfFollwers = res.data.noOfFollwers
       this.$state.posts = res.data.posts
-
+        console.log('api/profilePost', this.$state.posts)
       this.allLikesCount()
     },
 

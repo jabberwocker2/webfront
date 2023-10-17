@@ -1,11 +1,10 @@
 <template>
-    <MainLayout>
-        <SideNavMain />
-        <vue-scroll-snap class="grid justify-self-center" id="scroll" >
-
-
+    <SideNavMain class="mx-auto mt-[80px] transition-all 2s ease-in-out" :class="`${sideNavLeftMargin()}`"/>
+    <MainLayout  class="justify-between items-center">
+        <VideoHolder v-if="$generalStore.homePage" />
+        <vue-scroll-snap v-if="$generalStore.homePage" class="        " id="scroll" >
             <div v-for="post in $generalStore.posts" class="pt-[90px] w-{calc(100px-90px)} max-w-[690px] lg:justify-self-center md:justify-self-center">
-                <div  class="item w-[700px] border-t-2 border-l-2 ml-[10px]">
+                <div v-if="post.id" class="item w-[700px] border-t-2 border-l-2">
                     <PostMain  :post="post" />
                 </div>
             </div>
@@ -15,7 +14,10 @@
 
 
         </vue-scroll-snap>
+        <ExpandedCommentSection v-if="$generalStore.homePage" />
+        <ProfilePage v-if="$generalStore.profilePage" :userId="$generalStore.profileToShow"  />
     </MainLayout>
+
 
 </template>
 
@@ -27,12 +29,22 @@ const { $generalStore, $userStore,$postStore } = useNuxtApp()
 
 onMounted(async () => {
     try {
+        // console.log('post variable',$generalStore.posts);
         $generalStore.getAllUsersAndPosts('')
 
     } catch (error) {
 
     }
 })
+
+const sideNavLeftMargin = () => {
+        if(!$generalStore.expandedPost.id) {
+            return "ml-[15%] transition-all 0.1s"
+        } else {
+            return "ml-[0]"
+        }
+
+}
 
 
 </script>
@@ -55,6 +67,8 @@ onMounted(async () => {
 }
 
 .scroll-snap-container {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     height: 900px;
     width: 520px;
     -ms-overflow-style: none;
