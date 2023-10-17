@@ -17,6 +17,8 @@ commonFunctions.postComment = async (id, parent_id, level_id, mainParentId, user
 
 
     try {
+        console.log('multiple times')
+
         await userStore.addComment(id, textAreaValue, parent_id, level_id, mainParentId)
         document.getElementById(textArea).style.display = "none";
         document.getElementById(button).style.display = "none";
@@ -27,6 +29,7 @@ commonFunctions.postComment = async (id, parent_id, level_id, mainParentId, user
 
 }
 
+commonFunctions.currentPostId = 0;
 
 //change height
 commonFunctions.changeHeight  = async (id) => {
@@ -84,8 +87,8 @@ commonFunctions.openTextAreaWithButton = (id) => {
 
 //closeTextAreaWithButton
 commonFunctions.closeTextAreaWithButton = (id) => {
-    document.getElementById("textArea"+id).style.bottom = "100px";
-    document.getElementById("commentReplyArea_"+id).style.height = "0px";
+    // document.getElementById("textArea"+id).style.bottom = "100px";
+    // document.getElementById("commentReplyArea_"+id).style.height = "0px";
     document.getElementById("discussButton"+id).children[0].style.color = "red";
     document.getElementById("discussButton"+id).style.borderColor = "red";
     document.getElementById("discussButton"+id).style.width = "170px";
@@ -116,14 +119,14 @@ commonFunctions.initialState = (className) => {
 }
 //closeTextArea
 commonFunctions.closeTextArea  =  (id) => {
-
     if((document.getElementById("thoughtContainer"+id).scrollTop === 0)) {
-        commonFunctions.openTextAreaWithButton(id);
+        // commonFunctions.openTextAreaWithButton(id);
 
     } else {
-        for(let i=0;i<document.getElementsByClassName("commentTileSelect").length;i++) {
-            document.getElementsByClassName("commentTileSelect")[i].style.borderColor = "lightgray";
-        }
+
+        // for(let i=0;i<document.getElementsByClassName("commentTileSelect").length;i++) {
+        //     document.getElementsByClassName("commentTileSelect")[i].style.borderColor = "white";
+        // }
         commonFunctions.initialState("tileBoxClass");
         commonFunctions.closeTextAreaWithButton(id);
 
@@ -131,31 +134,35 @@ commonFunctions.closeTextArea  =  (id) => {
 }
 
 //toggleTextArea
-commonFunctions.toggleTextArea = (id,commentId,primaryObject) => {
+commonFunctions.toggleTextArea = (id,commentId,primaryObject=null) => {
     commonFunctions.initialState("tileBoxClass");
     if(document.getElementById("discussButton"+id).children[0].innerHTML === "Close") {
-        commonFunctions.openTextAreaWithButton(id);
-        document.getElementById("commentTileSelect-"+commentId).style.borderColor = "black"
+
+        // commonFunctions.openTextAreaWithButton(id);
+        document.getElementById("commentTileSelect-"+commentId).style.borderColor = "darkgray"
         document.getElementById("tileBox"+commentId).style.width = "80%"
 
         document.getElementById("commentTileSelect-"+commentId).style.borderWidth = "3px"
         document.getElementById("postCommentButton"+id).style.display = "none";
         document.getElementById("replyCommentButton"+id).style.display = "Block";
         let replyValue = document.getElementById("textArea"+id);
-        
-        document.getElementById("replyCommentButton"+id).addEventListener('click',function () {commonFunctions.postComment(primaryObject.post_id,primaryObject.comment_id,primaryObject.level_id,primaryObject.comment_value_id,primaryObject.userStore,(document.getElementById("textArea"+id).value),primaryObject.textArea,primaryObject.button)})
+        // console.log('multiple replies',primaryObject,primaryObject.length)
+        // document.getElementById("replyCommentButton"+id).removeEventListener(`click`,function () {commonFunctions.postComment(primaryObject.post_id,primaryObject.comment_id,primaryObject.level_id,primaryObject.comment_value_id,primaryObject.userStore,(document.getElementById("textArea"+id).value),primaryObject.textArea,primaryObject.button)});
+       // for(let i=0;i<document.getElementsByClassName('replyCommentButtonClass').length;i++) {
+       //     document.getElementsByClassName('replyCommentButtonClass')[i].removeEventListener('click',this)
+       // }
+       //  document.getElementById("replyCommentButton"+id).removeEventListener('click',commonFunctions.postComment,false);
+        document.getElementById("replyCommentButton"+id).addEventListener('click',function () {commonFunctions.postComment(primaryObject.post_id,primaryObject.comment_id,primaryObject.level_id,primaryObject.comment_value_id,primaryObject.userStore,(document.getElementById("textArea"+id).innerText),primaryObject.textArea,primaryObject.button)})
 
-         // border color logic ?
+        //  border color logic ?
         // document.getElementById("commentTileSelect-"+commentId).style.borderColor = "black";
         // document.getElementById("commentTileSelect-"+commentId).style.border = "2px solid";
     } else {
+
         document.getElementById("replyCommentButton"+id).style.display = "none";
         document.getElementById("postCommentButton"+id).style.display = "Block";
         document.getElementById("tileBox"+commentId).style.width = "30%"
-        for(let i=0;i<document.getElementsByClassName("commentTileSelect").length;i++) {
 
-            document.getElementsByClassName("commentTileSelect")[i].style.borderColor = "lightgray";
-        }
         commonFunctions.closeTextAreaWithButton(id);
     }
 }

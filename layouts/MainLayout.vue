@@ -1,10 +1,10 @@
 
 <template>
     <TopNav/>
-    <AddScrollable/>
+<!--    <AddScrollable/>-->
     <div
         :class="route.fullPath === '/' ? '' : ''"
-        class=" grid  mx-auto  lg:px-2.5 px-0"
+        class="   mx-auto  lg:px-2.5 px-0 flex justify-end"
     >
         <div>
         </div>
